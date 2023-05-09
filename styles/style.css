@@ -1,0 +1,33 @@
+*{
+    box-sizing: border-box;
+}
+
+main{
+    display: flex;
+    border-style: solid;
+    border: 1px solid black;
+    justify-content: center;
+    /* align-items: center; */
+    height: 100vh;
+    
+
+}
+#grid{
+    display: flex;
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0);
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 50%;
+    height: 35%;
+    
+}
+
+#grid div{
+    border: 1px solid grey;
+    flex-grow: 1;
+    height: 10%;
+    width: 10%;
+    font-size: 8px;
+
+}
+
