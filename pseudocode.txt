@@ -1,0 +1,113 @@
+Constants
+
+ peices = held in an object of 2d arrays each peice is represented by a 4x4 grid - 
+       0  1  2  3
+    0  1  1  1  0 
+    1  1  0  0  0
+    3  0  0  0  0   this example shows the array for the L peice each element in the peices obvject will have 4 arrays like this - one for each orientation.
+
+
+Cached DOM Elements
+
+// still trying to figure this out but will probably become more clear what I need while I'm coding.
+
+
+Functions
+
+init() - initialise - render homepage and give option of single player and multiplayer
+
+onePlayer() - initialises the board for one player mode
+
+twoPlayer() - initilaises the board for two player mode
+
+
+Classes
+As we want to make this scaleable to have multiple instances of tetris running at once we want to use OOP therefore we will need a board class.
+
+The Board class will have a height and width which by default will be set to 10x20
+
+
+This will be responsible for moving the active peice down and rendering the board state.
+
+--- Variables in Board Class ---
+
+Height, Width.
+BoardArr - 2d array representation of the board
+Score - current score - Number
+activePiece - the piece currently in play
+nextPiece - the next random piece that will drop
+speed - speed of tick for falling pieces - will scale with score up to a max
+playID - this is used to keep track of who wins for multiplayer
+
+
+
+--- Methods in Board Class ---
+
+render() - shows the current board state on screen
+
+renderScore() - renders the score for this instance of board
+
+moveActivePiece() - checks for collision on next move if no collision moves the active piece down on a tick rate and when player presses down button. if there is a collision  - calls combineBoard()
+
+combineBoard() - updates the board to show where the active piece ends up.
+
+rotatePiece() - rotates the active peice when player presses up arrow
+
+translatePiece() - moves peice along x axis when left arrow or right arrow is pressed.
+
+handlePlayerInput() - listens for player input and calls either rotatePiece, translatePiece() or moveActivePiece().
+
+isFullLine() = checks the board state to see if there are any completed lines returns true or false
+
+handleFullLine() - updates the board to delete any full lines and translates any floating blocks down.
+
+isGameOver() - returns true if there is a piece in the upper 4 hidden rows.
+
+renderGamover() - renders the gameOver screen.
+
+
+
+---- GamePlay Flow -----
+init(){
+    eventListener on buttons for 1 player and 2 player {
+        if evt.target = 1 player -> onePlayer()
+            
+        elif evt.target = 2 player -> twoPlayer()
+    
+    
+    }
+}
+
+onePlayer(){
+    board = new Board()
+    Board.play()
+
+}
+twoPlayer(){
+    board_1 = new Board(id = 1)
+    board_2 = new Board(id = 2)
+    // need to attach both board elemetns to a container and display them and think I'm going to need some kind of asynchronus approach to calling both functions simultaneously.
+    => call board_1.play()
+    => call board_2.play()
+
+    /// the multiplayer aspect needs some revision on the logic of how to get it to work ////
+
+}
+
+board.play(){
+    
+    boardEl.addEventListener('key up', () => {
+        handlePlayerInput()
+    })
+    while(!isGameOver){
+        moveActivePiece()
+        combineBoard()
+        if isFullLine(){
+            handleFullLine()
+        } 
+        render()
+    }
+    renderGamover()
+
+    
+}
