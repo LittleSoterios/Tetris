@@ -1,34 +1,52 @@
 *{
     box-sizing: border-box;
-}
-
-main{
-    display: flex;
-    border-style: solid;
-    border: 1px solid black;
-    justify-content: center;
-    /* align-items: center; */
-    height: 100vh;
-    align-items: flex-start;    
-
-}
-#grid{
-    display: flex;
-    box-shadow: 0 0 20px 0 rgba(0,0,0,0);
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 50vw;
-    height: 35vh;
-    /* margin-top: -7vh; */
     
 }
 
-#grid div{
-    border: 1px solid grey;
-    flex-grow: 1;
-    height: 10%;
-    width: 10%;
-    font-size: 8px;
+.container{
+    display: grid;
+    border-style: solid;
+    border: 1px solid black;
+    /* justify-content: center;
+    /* align-items: center; 
+    height: 100vh;
+    align-items: baseline;     */
+    grid-template-columns: 100px 300px 100px;
+    grid-template-rows: 50px 600px 50px;
+    grid-template-areas: 
+        "title title title"
+        "left-side board right-side"
+        "controls home home";
 
 }
 
+
+#title{
+    grid-area: title;
+    background-color: aqua;
+}
+#left{
+    grid-area: left-side;
+    background-color: magenta;
+    
+}
+#board{
+    grid-area: board;
+    background-color:black;
+    height: 600px;
+    width: 300px;
+}
+#right{
+    grid-area: right-side;
+    background-color: greenyellow;
+}
+#controls{
+    grid-area: controls;
+    background-color: orange;
+
+}
+
+#home{
+    grid-area: home;
+    background-color: violet;
+}
