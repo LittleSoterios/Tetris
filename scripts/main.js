@@ -1,6 +1,8 @@
 
 // ! CONSTANTS
 
+//const { xgcd } = require("mathjs")
+
 TETRAMINOS = {
     o: {color: 'red',
         0: [[1, 1],
@@ -95,7 +97,7 @@ class Board{
         }
         this.activePiece = CODES[Math.floor(Math.random()*CODES.length)]
         this.activePieceArr = TETRAMINOS[this.activePiece]
-        this.speed = 500
+        this.speed = 10000000
         this.playID = 1
         this.pieceOrientation = 0;
         // this.boardGr.setAttribute('width', this.width)
@@ -118,8 +120,6 @@ class Board{
         for (let i = 0; i< this.activePieceArr[this.pieceOrientation].length; i++){
             //console.log('gets here')
             for (let j = 0; j< this.activePieceArr[this.pieceOrientation][i].length; j++){
-                //console.log(TETRAMINOS[this.activePiece][i][j])
-
                 this.boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]] = this.activePieceArr[this.pieceOrientation][i][j]
             }
         }
@@ -133,6 +133,9 @@ class Board{
                     this.boardGr.fillRect(j*30,i*30,30,30);
 
                 }
+                else if(this.boardArr[i][j] == 'x'){
+                    this.boardGr.fillRect(j*30,i*30,30,30);
+                }
             }
         }
     }
@@ -143,8 +146,9 @@ class Board{
             //console.log('gets here')
             for (let j = 0; j< this.activePieceArr[this.pieceOrientation][i].length; j++){
                 //console.log(TETRAMINOS[this.activePiece][i][j])
-
-                this.boardArr[i+this.piecePositionPrev[1]][j+this.piecePositionPrev[0]] = -1
+                if (this.boardArr[i+this.piecePositionPrev[1]][j+this.piecePositionPrev[0]] == 1){
+                    this.boardArr[i+this.piecePositionPrev[1]][j+this.piecePositionPrev[0]] = -1
+                }
             }
         }
 
@@ -161,16 +165,100 @@ class Board{
                 }
             }
         }
+        for (let i = 0; i< this.boardArr.length; i++) {
+            // console.log(this.boardArr[i])
+             for(let j = 0; j< this.boardArr[i].length; j++) {
+                 if (this.boardArr[i][j] === -1) {
+                     //console.log(this.boardGr)
+                     this.boardArr[i][j] = 0;
+                 }
+             }
+         }
     }
-    movePeice() {
-        // if(collision()){
-        //     newPiece()
-        // } 
-        this.clearPrevPiece()
+    collision(){
+        //console.log(this.piecePosition[1] + 1)
+        //console.log(this.boardArr[this.piecePosition[0]+1][this.piecePosition[1]])
+        
+        if((this.piecePosition[1] + 1)>(20 - this.activePieceArr[this.pieceOrientation].length)){
+            //console.log('returns true on collision')
+            return true
+        }
+        //console.log(this.boardArr)
+        let cp_boardArr = this.boardArr.map(function(arr){
+            return arr.slice()
+        })
+               
+
+
+        for (let i = 0; i< this.activePieceArr[this.pieceOrientation].length; i++){
+            //console.log('gets here')
+            for (let j = 0; j< this.activePieceArr[this.pieceOrientation][i].length; j++){
+                //console.log(TETRAMINOS[this.activePiece][i][j])
+                //console.log(this.piecePosition)
+                //console.log(this.boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
+                //console.log(this.activePieceArr[this.pieceOrientation][i][j])
+                if(this.activePieceArr[this.pieceOrientation][i][j]==0){
+                    continue
+                }
+                //console.log(cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
+                else if (cp_boardArr[i+this.piecePosition[1]+1][j+this.piecePosition[0]] == 'x'){
+                    return true;
+                } 
+            }
+        }
+        //console.log(cp_boardArr)
+        // let x = false
+        // cp_boardArr.forEach(element,i_idx => {
+        //     element.forEach(val, j_idx =>{
+        //         //console.log(val)
+        //         if ()
+        //         if (val>2){
+        //             x = true
+        //         }
+        //     })
+        // })
+        
+        
+        
+            
+            
+        return false;
+        
+    }
+
+    newPiece(){
+        for (let i = 0; i< this.boardArr.length; i++) {
+            // console.log(this.boardArr[i])
+             for(let j = 0; j< this.boardArr[i].length; j++) {
+                    if(this.boardArr[i][j] == 1){
+                        console.log('doing this?')
+                        this.boardArr[i][j] = 'x'
+                    
+                    }
+            }
+        }
+        console.log('there should be x\'s here: \n', this.boardArr)
+
+        this.activePiece = CODES[Math.floor(Math.random()*CODES.length)]
+        this.activePieceArr = TETRAMINOS[this.activePiece]
+        this.piecePosition = [3,0]
         this.piecePositionPrev = this.piecePosition
-        //console.log(this.piecePositionPrev)
-        this.piecePosition[1]++
-        //console.log('hgets here', this.piecePosition[1])
+        this.pieceOrientation = 0
+    }
+
+    movePeice() {
+        if(this.collision()){
+            //console.log("should get here after true on collision")
+            this.newPiece()
+        }
+        else{
+            this.clearPrevPiece()
+            this.piecePositionPrev = this.piecePosition
+            //console.log(this.piecePositionPrev)
+            this.piecePosition[1]++
+            //console.log('hgets here', this.piecePosition[1])
+        } 
+        
     }
 
     play() {
@@ -184,6 +272,7 @@ class Board{
             }
             
             this.movePeice()
+
             //this.clearPrevPiece()
             this.render()
             //console.log("tick")
@@ -218,10 +307,10 @@ class Board{
     }
     rotatePeice(){
         this.clearPrevPiece()
-        console.log((this.pieceOrientation + 1) % (Object.keys(this.activePieceArr).length -1))
+        //console.log((this.pieceOrientation + 1) % (Object.keys(this.activePieceArr).length -1))
         this.pieceOrientation = (this.pieceOrientation + 1) % (Object.keys(this.activePieceArr).length - 1)
 
-        console.log(this.pieceOrientation)
+       // console.log(this.pieceOrientation)
         
 
     }
