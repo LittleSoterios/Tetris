@@ -39,6 +39,12 @@
 #right{
     grid-area: right-side;
     background-color: greenyellow;
+    display: flex;
+}
+#next{
+    width: 100px;
+    height: 100px;
+    
 }
 #controls{
     grid-area: controls;

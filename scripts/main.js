@@ -72,6 +72,11 @@ TETRAMINOS = {
 }
 CODES = ["o","i","s","z","l","j","t"]
 
+// ! cached dom elements
+
+const titleEl = document.getElementById('title')
+const scoreEl = document.getElementById('title')
+const homeEl = document.getElementById('title')
 
 
 
@@ -90,16 +95,25 @@ class Board{
 
         for (let i = 0; i<this.height; i++){
             let arr = []
-            for (let j = 0; j<this.width; j++){
-                arr.push(0);
+            for (let j = 0; j<this.width+1; j++){
+                if (arr.length == this.width){
+                    arr.push('x')
+                }
+                else{arr.push(0);
+                }
+                
             }
             this.boardArr.push(arr)
         }
         this.activePiece = CODES[Math.floor(Math.random()*CODES.length)]
         this.activePieceArr = TETRAMINOS[this.activePiece]
-        this.speed = 1000000
+        this.speed = 500
         this.playID = 1
         this.pieceOrientation = 0;
+        this.ticker;
+        this.speedMultiplier = 1
+        this.score = 0
+        
         // this.boardGr.setAttribute('width', this.width)
         // this.boardGr.setAttribute('height', this.height)
 
@@ -332,21 +346,23 @@ class Board{
                 }
                 
                 
+                
             }
         }
-        for (let i =0; i< cp_boardArr.length; i++){
-            for (let j = 0; j<cp_boardArr[i].length; j++){
-                if(cp_boardArr[i][j] === 1){
-                    console.log(i,j)
-                    console.log("adding 1 to active squares")
-                    active_squares++
-                }
-            }
-        }
-        if (active_squares !== 4){
-            console.log(active_squares)
-            return true;
-        }
+        console.log(cp_boardArr)
+        // for (let i =0; i< cp_boardArr.length; i++){
+        //     for (let j = 0; j<cp_boardArr[i].length; j++){
+        //         if(cp_boardArr[i][j] === 1){
+        //             console.log(i,j)
+        //             console.log("adding 1 to active squares")
+        //             active_squares++
+        //         }
+        //     }
+        // }
+        // if (active_squares !== 4){
+        //     console.log(active_squares)
+        //     return true;
+        // }
         return false
     }
 
@@ -394,17 +410,27 @@ class Board{
         for (let i =0; i<this.boardArr.length;i++){
             if (this.boardArr[i].every(item => xs.includes(item))){
                 console.log('this should delete rows')
-                this.boardArr.splice(i,1);
-                this.boardArr.unshift(os);
+                this.boardArr.splice(i,1)
+                this.boardArr.unshift(os)
                 this.checkLine()
+                this.speed = this.speed - (this.speedMultiplier*5)
+                this.speedMultiplier +=0.05
             } else continue
         }
+    }
+    isGameOver(){
+        if(this.boardArr[0].slice(0,9).includes('x')){
+            console.log('calls gameover')
+            this.gameOver = true
+        }
+        
     }
 
     play() {
         this.render()
         
         const onTick = () =>{
+            this.isGameOver()
             //console.log(this)
             if(this.gameOver){
                 this.endGame();
@@ -419,7 +445,7 @@ class Board{
             //console.log(this.boardArr)
             
         }
-        setInterval(onTick, this.speed)
+        this.ticker = setInterval(onTick, this.speed)
         this.takeUserInput()
 
         
@@ -427,6 +453,7 @@ class Board{
     }
 
     endGame() {
+        clearInterval(this.ticker)
         return;
     }
 
@@ -507,6 +534,7 @@ function init(){
 
     board = new Board(20,10, canvas_ctx)
     board.play()
+    console.log('comes out of the game')
     
 }
 
