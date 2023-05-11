@@ -97,7 +97,7 @@ class Board{
         }
         this.activePiece = CODES[Math.floor(Math.random()*CODES.length)]
         this.activePieceArr = TETRAMINOS[this.activePiece]
-        this.speed = 10000000
+        this.speed = 1000000
         this.playID = 1
         this.pieceOrientation = 0;
         // this.boardGr.setAttribute('width', this.width)
@@ -115,11 +115,14 @@ class Board{
     }
 
     renderActivePeice(){
-        this.boardGr.fillStyle = this.activePieceArr.color
+        
         //console.log(this.activePieceArr[this.pieceOrientation]);
         for (let i = 0; i< this.activePieceArr[this.pieceOrientation].length; i++){
             //console.log('gets here')
             for (let j = 0; j< this.activePieceArr[this.pieceOrientation][i].length; j++){
+                if(this.boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]]== 'x'){
+                    continue
+                }
                 this.boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]] = this.activePieceArr[this.pieceOrientation][i][j]
             }
         }
@@ -130,11 +133,23 @@ class Board{
                 if (this.boardArr[i][j] === 1){
                     //console.log(this.boardGr)
                     //this.boardGr.
+                    this.boardGr.fillStyle = this.activePieceArr.color
                     this.boardGr.fillRect(j*30,i*30,30,30);
+                
 
                 }
-                else if(this.boardArr[i][j] == 'x'){
+                else if (this.boardArr[i][j] == 'x'){
+                    //console.log(this.boardGr)
+                    //this.boardGr.
+                    this.boardGr.fillStyle = 'white'
                     this.boardGr.fillRect(j*30,i*30,30,30);
+                
+                } else if (this.boardArr[i][j] === 0){
+                    //console.log(this.boardGr)
+                    //this.boardGr.
+                    this.boardGr.fillStyle = 'black'
+                    this.boardGr.fillRect(j*30,i*30,30,30);
+                
                 }
             }
         }
@@ -161,19 +176,20 @@ class Board{
                     //console.log(this.boardGr)
                     this.boardGr.fillStyle = 'black'
                     this.boardGr.fillRect(j*30,i*30,30,30);
+                    this.boardArr[i][j] = 0;
                     //console.log("test to see if it gets here")
                 }
             }
         }
-        for (let i = 0; i< this.boardArr.length; i++) {
-            // console.log(this.boardArr[i])
-             for(let j = 0; j< this.boardArr[i].length; j++) {
-                 if (this.boardArr[i][j] === -1) {
-                     //console.log(this.boardGr)
-                     this.boardArr[i][j] = 0;
-                 }
-             }
-         }
+        // for (let i = 0; i< this.boardArr.length; i++) {
+        //     // console.log(this.boardArr[i])
+        //      for(let j = 0; j< this.boardArr[i].length; j++) {
+        //          if (this.boardArr[i][j] === -1) {
+        //              //console.log(this.boardGr)
+        //              this.boardArr[i][j] = 0;
+        //          }
+        //      }
+        //  }
     }
     collision(){
         //console.log(this.piecePosition[1] + 1)
@@ -197,15 +213,17 @@ class Board{
                 //console.log(this.piecePosition)
                 //console.log(this.boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
                 //console.log(this.activePieceArr[this.pieceOrientation][i][j])
-                if(this.activePieceArr[this.pieceOrientation][i][j]==0){
-                    continue
-                }
+                // if(this.activePieceArr[this.pieceOrientation][i][j]==0){
+                //     continue
+                // }
                 //console.log(cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
-                else if (cp_boardArr[i+this.piecePosition[1]+1][j+this.piecePosition[0]] == 'x'){
+                if (cp_boardArr[i+this.piecePosition[1]+1][j+this.piecePosition[0]] == 'x' && this.activePieceArr[this.pieceOrientation][i][j]!==0){
                     return true;
                 } 
             }
         }
+        
+
         //console.log(cp_boardArr)
         // let x = false
         // cp_boardArr.forEach(element,i_idx => {
@@ -225,25 +243,134 @@ class Board{
         return false;
         
     }
+    checkWalls(direction){
+        let x;
+        let v;
+        if (direction == 1){
+            x = 1
+            v = 10
+        }
+        else{
+            x = -1
+            v = -1
+        }
+        for (let i = 0; i< this.activePieceArr[this.pieceOrientation].length; i++){
+            //console.log('gets here')
+            for (let j = 0; j< this.activePieceArr[this.pieceOrientation][i].length; j++){
+                //console.log(TETRAMINOS[this.activePiece][i][j])
+                //console.log(this.piecePosition)
+                //console.log(this.boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
+                //console.log(this.activePieceArr[this.pieceOrientation][i][j])
+                // if(this.activePieceArr[this.pieceOrientation][i][j]==0){
+                //     continue
+                // }
+                //console.log(cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
+                if (j+this.piecePosition[0]+x === v && this.activePieceArr[this.pieceOrientation][i][j]!==0){
+                    return true
+                } 
+            }
+        }
+        return false
+
+    }
+    checkPeiceCollision(direction){
+        let x;
+        let v;
+        if (direction == 1){
+            x = 1
+            //v = 10
+        }
+        else{
+            x = -1
+            //v = -1
+        }
+        let cp_boardArr = this.boardArr.map(function(arr){
+            return arr.slice()
+        })
+               
+
+
+        for (let i = 0; i< this.activePieceArr[this.pieceOrientation].length; i++){
+            //console.log('gets here')
+            for (let j = 0; j< this.activePieceArr[this.pieceOrientation][i].length; j++){
+                //console.log(TETRAMINOS[this.activePiece][i][j])
+                //console.log(this.piecePosition)
+                //console.log(this.boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
+                //console.log(this.activePieceArr[this.pieceOrientation][i][j])
+                // if(this.activePieceArr[this.pieceOrientation][i][j]==0){
+                //     continue
+                // }
+                //console.log(cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]])
+                if (cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]+x] == 'x' && this.activePieceArr[this.pieceOrientation][i][j]!==0){
+                    return true;
+                } 
+            }
+        }
+        return false
+
+    }
+    checkRotate(){
+
+        let copy_peice_orietation = (this.pieceOrientation + 1) % (Object.keys(this.activePieceArr).length - 1)
+        //copies piece orientation with new rotation to test
+        let cp_boardArr = this.boardArr.map(function(arr){
+            return arr.slice()
+        })
+        // copies the board array without referencing
+
+        let active_squares = 0
+        for (let i = 0; i< this.activePieceArr[copy_peice_orietation].length; i++){
+            //console.log('gets here')
+            for (let j = 0; j< this.activePieceArr[copy_peice_orietation][i].length; j++){
+                // if(cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]]== 'x'){
+                //     return
+                // }
+                cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]] += this.activePieceArr[copy_peice_orietation][i][j]
+                if (cp_boardArr[i+this.piecePosition[1]][j+this.piecePosition[0]] == 'x1' ){
+                    return true
+                
+                }
+                
+                
+            }
+        }
+        for (let i =0; i< cp_boardArr.length; i++){
+            for (let j = 0; j<cp_boardArr[i].length; j++){
+                if(cp_boardArr[i][j] === 1){
+                    console.log(i,j)
+                    console.log("adding 1 to active squares")
+                    active_squares++
+                }
+            }
+        }
+        if (active_squares !== 4){
+            console.log(active_squares)
+            return true;
+        }
+        return false
+    }
+
+    
 
     newPiece(){
         for (let i = 0; i< this.boardArr.length; i++) {
             // console.log(this.boardArr[i])
              for(let j = 0; j< this.boardArr[i].length; j++) {
                     if(this.boardArr[i][j] == 1){
-                        console.log('doing this?')
+                        //console.log('doing this?')
                         this.boardArr[i][j] = 'x'
                     
                     }
             }
         }
-        console.log('there should be x\'s here: \n', this.boardArr)
-
+        //console.log('there should be x\'s here: \n', this.boardArr)
+        this.checkLine()
         this.activePiece = CODES[Math.floor(Math.random()*CODES.length)]
         this.activePieceArr = TETRAMINOS[this.activePiece]
         this.piecePosition = [3,0]
         this.piecePositionPrev = this.piecePosition
         this.pieceOrientation = 0
+        this.render()
     }
 
     movePeice() {
@@ -260,6 +387,19 @@ class Board{
         } 
         
     }
+    checkLine(){
+        let xs = ['x','x','x','x','x','x','x','x','x','x']
+        let os = [0,0,0,0,0,0,0,0,0,0]
+        console.log('this is called');
+        for (let i =0; i<this.boardArr.length;i++){
+            if (this.boardArr[i].every(item => xs.includes(item))){
+                console.log('this should delete rows')
+                this.boardArr.splice(i,1);
+                this.boardArr.unshift(os);
+                this.checkLine()
+            } else continue
+        }
+    }
 
     play() {
         this.render()
@@ -272,7 +412,7 @@ class Board{
             }
             
             this.movePeice()
-
+            
             //this.clearPrevPiece()
             this.render()
             //console.log("tick")
@@ -297,7 +437,11 @@ class Board{
     // }
 
     translatePiece(direction) {
-        
+        if (this.checkWalls(direction)){
+            return;
+        } else if(this.checkPeiceCollision(direction)){
+            return;
+        }
         this.clearPrevPiece()
         if (direction) this.piecePosition[0]++
         else this.piecePosition[0]--
@@ -306,6 +450,9 @@ class Board{
 
     }
     rotatePeice(){
+        if(this.checkRotate()){
+            return
+        }
         this.clearPrevPiece()
         //console.log((this.pieceOrientation + 1) % (Object.keys(this.activePieceArr).length -1))
         this.pieceOrientation = (this.pieceOrientation + 1) % (Object.keys(this.activePieceArr).length - 1)
@@ -348,7 +495,8 @@ class Board{
 
 
 function init(){
-
+    const arr = ['x','x','x']
+    console.log("hallelujuh", 1+arr[0])
     // ! CACHED DOM ELEMENTS
     const canvas = document.getElementById('board')
     canvas.setAttribute('width', 300)
