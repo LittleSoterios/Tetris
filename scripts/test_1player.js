@@ -1,14 +1,14 @@
 
-// ! CONSTANTS
+// // ! CONSTANTS
 
-//const { xgcd } = require("mathjs")
+// //const { xgcd } = require("mathjs")
 
 TETRAMINOS = {
     o: {color: 'red',
         0: [[1, 1],
-            [1, 1]]  } ,
+            [1, 1],]  } ,
     
-    i: { color: 'blue',
+    i: { color: 'yellow',
         0: [[1, 1, 1, 1]],
         1: [[1],[1],[1],[1]]},
         
@@ -74,23 +74,37 @@ CODES = ["o","i","s","z","l","j","t"]
 
 // ! cached dom elements
 
-const titleEl = document.getElementById('title')
-const scoreEl = document.getElementById('title')
-const homeEl = document.getElementById('title')
+
+
 
 
 
 // ! CLASSES
 
 class Board{
-    constructor(height, width, boardEl){
-        this.height = height
-        this.width = width
+    constructor(boardEl, nextEl){
+        this.height = 20
+        this.width = 10
         this.boardArr = []
-        this.boardGr = boardEl
         this.piecePosition = [3,0]
         this.piecePositionPrev = this.piecePosition
         this.gameOver = false
+        this.boardEl = boardEl
+        this.nextEl = nextEl
+        this.nextArr = []
+        this.lineCount = 0;
+
+        for(let i=0;i<4;i++){
+            let arr = []
+            for(let j=0;j<4;j++){
+                arr.push(0)
+                const cell = document.createElement('div');
+                cell.id = `nextr${i}c${j}`
+                cell.classList.add('empty')
+                this.nextEl.appendChild(cell);
+            }
+            this.nextArr.push(arr)
+        }
         
 
         for (let i = 0; i<this.height; i++){
@@ -101,15 +115,27 @@ class Board{
                 }
                 else{arr.push(0);
                 }
+                if(j ===10){
+                 continue
+                }
+                const cell = document.createElement('div');
+                cell.id = `r${i}c${j}`
+                cell.classList.add('empty')
+                this.boardEl.appendChild(cell);
+
                 
             }
             this.boardArr.push(arr)
         }
         this.activePiece = CODES[Math.floor(Math.random()*CODES.length)]
+        this.nextPiece = CODES[Math.floor(Math.random()*CODES.length)]
         this.activePieceArr = TETRAMINOS[this.activePiece]
+        this.nextPieceArr = TETRAMINOS[this.nextPiece]
         this.speed = 500
         this.playID = 1
         this.pieceOrientation = 0;
+        //this.blur = 0
+        
         this.ticker;
         this.speedMultiplier = 1
         this.score = 0
@@ -120,8 +146,9 @@ class Board{
     }
 
     render(){
-        
+        //this.renderNextPiece()
         this.renderActivePeice()
+        this.renderNextPiece()
         
     }
 
@@ -140,28 +167,71 @@ class Board{
 
         for (let i = 0; i< this.boardArr.length; i++){
            
-            for(let j = 0; j< this.boardArr[i].length; j++){
+            for(let j = 0; j< this.boardArr[i].length-1; j++){
+                const el = document.getElementById(`r${i}c${j}`)
+                el.removeAttribute('class')
                 if (this.boardArr[i][j] === 1){
-                
-                    this.boardGr.fillStyle = this.activePieceArr.color
-                    this.boardGr.fillRect(j*30,i*30,30,30);
-                
+                    el.classList.add(this.activePieceArr.color)
 
                 }
                 else if (this.boardArr[i][j] == 'x'){
                     
-                    this.boardGr.fillStyle = 'white'
-                    this.boardGr.fillRect(j*30,i*30,30,30);
+                    el.classList.add('placed')
                 
                 } else if (this.boardArr[i][j] === 0){
                     
-                    this.boardGr.fillStyle = 'black'
-                    this.boardGr.fillRect(j*30,i*30,30,30);
+                    el.classList.add('empty')
                 
                 }
             }
         }
     }
+    renderNextPiece(){
+        for (let i = 0; i< this.nextArr.length; i++){
+           
+            for(let j = 0; j< this.nextArr[i].length; j++){
+                const el = document.getElementById(`nextr${i}c${j}`)
+                this.nextArr[i][j] = 0
+                // el.removeAttribute('class')
+                //el.classList.add('empty')
+            }
+        }
+
+        for (let i = 0; i< this.nextPieceArr[0].length; i++){
+            
+            for (let j = 0; j< this.nextPieceArr[0][i].length; j++){
+                
+                this.nextArr[i][j] = this.nextPieceArr[0][i][j]
+            }
+        }
+
+        for (let i = 0; i< this.nextArr.length; i++){
+           
+            for(let j = 0; j< this.nextArr[i].length; j++){
+                
+                
+                const el = document.getElementById(`nextr${i}c${j}`)
+                el.removeAttribute('class')
+                if (this.nextArr[i][j] === 1){
+                    el.classList.add(this.nextPieceArr.color)
+
+                }
+                
+                 else if (this.nextArr[i][j] === 0){
+                    
+                    el.classList.add('empty')
+                
+                } else{
+                    el.removeAttribute('class')
+                }
+                
+                
+            }
+        
+        }
+        
+    }
+    
 
     clearPrevPiece(){
 
@@ -180,10 +250,9 @@ class Board{
         for (let i = 0; i< this.boardArr.length; i++) {
            
             for(let j = 0; j< this.boardArr[i].length; j++) {
+                const el = document.getElementById(`r${i}c${j}`)
                 if (this.boardArr[i][j] === -1) {
-                   
-                    this.boardGr.fillStyle = 'black'
-                    this.boardGr.fillRect(j*30,i*30,30,30);
+                    el.classList.add('empty')
                     this.boardArr[i][j] = 0;
                     
                 }
@@ -284,6 +353,8 @@ class Board{
         return false
     }
 
+
+
     
 
     newPiece(){
@@ -299,12 +370,15 @@ class Board{
         }
         
         this.checkLine()
-        this.activePiece = CODES[Math.floor(Math.random()*CODES.length)]
+        this.activePiece = this.nextPiece
         this.activePieceArr = TETRAMINOS[this.activePiece]
+        this.nextPiece = CODES[Math.floor(Math.random()*CODES.length)]
+        this.nextPieceArr = TETRAMINOS[this.nextPiece]
         this.piecePosition = [3,0]
         this.piecePositionPrev = this.piecePosition
         this.pieceOrientation = 0
         this.render()
+        
     }
 
     movePeice() {
@@ -321,17 +395,35 @@ class Board{
         
     }
     checkLine(){
-        let xs = ['x','x','x','x','x','x','x','x','x','x']
-        let os = [0,0,0,0,0,0,0,0,0,0]
+        let xs = ['x','x','x','x','x','x','x','x','x','x','x']
+        let os = [0,0,0,0,0,0,0,0,0,0,'x']
         console.log('this is called');
         for (let i =0; i<this.boardArr.length;i++){
             if (this.boardArr[i].every(item => xs.includes(item))){
                 console.log('this should delete rows')
                 this.boardArr.splice(i,1)
                 this.boardArr.unshift(os)
-                this.checkLine()
+                
                 this.speed = this.speed - (this.speedMultiplier*5)
                 this.speedMultiplier +=0.05
+                this.lineCount+=1;
+                //this.blur += 0.5
+                //this.boardEl.style.filter = `blur(${this.blur}px)`
+                this.checkLine()
+                if(this.lineCount === 1){
+                    this.score +=40
+                } else if (this.lineCount ===2){
+                    this.score += 100
+                } else if (this.lineCount === 3){
+                    this.score += 300
+                } else if (this.lineCount === 4){
+                    this.score += 1200
+                }
+
+                this.lineCount = 0;
+                clearInterval(this.ticker);
+                //this.render()
+                this.tickerFunc() 
             } else continue
         }
     }
@@ -343,12 +435,36 @@ class Board{
         }
         
     }
-
-    play() {
-        this.render()
+    newGame(){
+        document.getElementById('end-screen').style.display = 'none'
+        for(let i=0;i<4;i++){
+            //let arr = []
+            for(let j=0;j<4;j++){
+                //arr.push(0)
+                document.getElementById(`nextr${i}c${j}`).remove()
+                
+                
+            }
+            //this.nextArr.push(arr)
+        }
         
+
+        for (let i = 0; i<20; i++){
+            //let arr = []
+            for (let j = 0; j<10; j++){
+                document.getElementById(`r${i}c${j}`).remove()
+            }
+            
+        }
+
+        //console.log(board.boardEl, board.nextEl)
+        let new_board = new Board(board.boardEl, board.nextEl)
+        new_board.play()
+    }
+    tickerFunc(){
+        this.takeUserInput()
         const onTick = () =>{
-            this.takeUserInput()
+            
             this.isGameOver()
             if(this.gameOver){
                 this.endGame()
@@ -357,9 +473,22 @@ class Board{
             this.movePeice()
             this.render()
             console.log("ticking")
-        
+
         }
         this.ticker = setInterval(onTick, this.speed)
+    }
+
+    play() {
+        
+        this.render()
+        
+        this.tickerFunc()
+        
+        //this.ticker = setInterval(onTick, this.speed)
+        
+        
+        
+        //this.ticker = setInterval(onTick, this.speed)
         
 
         
@@ -368,7 +497,10 @@ class Board{
 
     endGame() {
         clearInterval(this.ticker)
-        document.removeEventListener('onkeyup')
+        document.getElementById('end-screen').style.display = 'flex'
+        document.getElementById('score').innerText = `SCORE: ${this.score}`
+        document.getElementById('play-again').addEventListener('click', this.newGame)
+        //document.removeEventListener('onkeyup')
         return;
     }
 
@@ -399,7 +531,7 @@ class Board{
 
     takeUserInput() {
         if(this.gameOver){
-            console.log("should return???")
+            
             return 
 
         } 
@@ -439,17 +571,40 @@ function init(){
     const arr = ['x','x','x']
     console.log("hallelujuh", 1+arr[0])
     // ! CACHED DOM ELEMENTS
-    const canvas = document.getElementById('board')
-    canvas.setAttribute('width', 300)
-    canvas.setAttribute('height', 600)
+    const homeEl = document.getElementById('home');
+    homeEl.addEventListener('click', function(evt){
+        if(evt.target.id == 'p1'){
+            containerEl.style.display = 'grid'
+            homeEl.style.display = 'none'
+            board = new Board(boardEl, nextEl)
+            board.play()  
+        }
+        
+    })
 
-    const canvas_ctx = canvas.getContext('2d')
+    
     
 
-    board = new Board(20,10, canvas_ctx)
-    board.play()
-    console.log('comes out of the game')
     
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
+
+const containerEl = document.getElementById('grid-container')
+const boardEl = document.getElementById('board')
+const nextEl = document.getElementById('next')
+
+// for (let i = 0; i<20; i++){
+//     //let arr = []
+//     for (let j = 0; j<10; j++){
+        
+//         const cell = document.createElement('div');
+//         cell.id = `r${i}c${j}`
+//         cell.classList.add('empty')
+//         boardEl.appendChild(cell);
+
+        
+//     }
+    
+// }
