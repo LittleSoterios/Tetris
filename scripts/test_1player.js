@@ -1,5 +1,10 @@
-let board_1, board_2
 
+
+let board_1, board_2
+const TETRIS_AUDIO = new Audio('../audio/tetris-lofi.wav')
+const LINE_AUDIO = new Audio('../audio/line.wav')
+const LINE_AUDIO_4 = new Audio('../audio/4-line.wav')
+const MULTI_AUDIO = new Audio('../audio/2-player.wav')
 
 
 const WINNER_MSG = {
@@ -186,7 +191,7 @@ class Board {
   }
 
   render() {
-
+    if (this.gameOver) return
     this.renderActivePeice();
     this.renderNextPiece();
     document.getElementById(`p${this.playID}_score-game${this.isMulti}`).innerText = this.score
@@ -466,7 +471,16 @@ class Board {
         } else if (this.lineCount === 4) {
           this.score += 1200;
         }
-
+        if(this.lineCount == 4){
+          LINE_AUDIO_4.volume = 0.2
+          LINE_AUDIO_4.play()
+        }
+        else{
+          LINE_AUDIO.playbackRate = 5
+          LINE_AUDIO.volume = 0.15
+          LINE_AUDIO.play()
+        }
+        
         this.lineCount = 0;
         
         clearInterval(this.ticker)
@@ -482,12 +496,10 @@ class Board {
     }
   }
   newGame (){
-    console.log('does this work?')
-    console.log(this.id[this.id.length-1])
+    
     if(this.id[this.id.length-1] == 2){
-      console.log('does this')
+      MULTI_AUDIO.currentTime = 0
       document.getElementById(`end-screen-2`).style.display = "none"
-      console.log('fucking close end-screen 2')
       board_1 = new Board(p1_board, p1_next, 1, 2)
       board_2  = new Board(p2_board, p2_next, 2, 2)
       board_2.play()
@@ -495,6 +507,7 @@ class Board {
 
     }
     else{
+      TETRIS_AUDIO.currentTime = 0
       document.getElementById("end-screen-1").style.display = "none";
       board_1 = new Board(boardEl, nextEl,1,1);
       board_1.play();
@@ -522,6 +535,7 @@ class Board {
 
   endGame() {
     clearInterval(this.ticker);
+    
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
           document.getElementById(`nextr${i}c${j}${this.playID}`).remove()
@@ -538,7 +552,7 @@ class Board {
     this.scoreEl.remove() 
     
     
-    console.log("this is" , board_1)
+    
     if (this.isMulti == 2 && !(board_1.gameOver == true && board_2.gameOver == true)){
       return
     }
@@ -554,8 +568,9 @@ class Board {
 
     
     document.getElementById(`end-screen-${this.isMulti}`).style.display = "flex";
-    console.log(document.getElementById(`end-screen-${this.isMulti}`))
+
     if(this.isMulti == 1) {
+      TETRIS_AUDIO.volume = 0.1
       document.getElementById("score").innerText = `SCORE: ${this.score}`
       document
       .getElementById(`play-again-${this.isMulti}`)
@@ -564,9 +579,12 @@ class Board {
       containerEl.style.display = 'none'
       document.getElementById(`end-screen-2`).style.display = "none"
       document.getElementById("home").style.display = "flex"
+      TETRIS_AUDIO.pause()
+      TETRIS_AUDIO.currentTime = 0
     })   
     }
     else {
+      MULTI_AUDIO.volume = 0.1
       document.getElementById("winner").innerText = WINNER_MSG[winner]
     
     document
@@ -647,11 +665,17 @@ function init() {
       homeEl.style.display = "none"
       board_1 = new Board(boardEl, nextEl, 1, 1)
       board_1.play()
+      TETRIS_AUDIO.volume = 0.4
+      TETRIS_AUDIO.play()
+
+      TETRIS_AUDIO.loop = true;
     }
     else if(evt.target.id == 'p2'){
       multiContainer.style.display = "grid"
       homeEl.style.display = "none"
-
+      MULTI_AUDIO.volume = 0.4
+      MULTI_AUDIO.loop = true
+      MULTI_AUDIO.play()
       board_1 = new Board(p1_board, p1_next, 1, 2)
       board_2  = new Board(p2_board, p2_next, 2, 2)
       board_2.play()
@@ -676,7 +700,7 @@ const nextEl = document.getElementById("next");
 let winner;
 
 document.addEventListener('keyup', function(e){
-  //console.log(typeof(board_1) == undefined)
+
   if(typeof(board_1) === 'undefined' || (board_1.gameOver == true &&board_2.gameOver == true)){
     return
   }
@@ -714,54 +738,4 @@ document.addEventListener('keyup', function(e){
   }
 
 })
-// function takeUserInput(codeBoard) {
-//     let up,left,down,right
-//     if(codeBoard.playID === 1){
-//         up = 38
-//         left = 37
-//         right = 39
-//         down = 40
-//     } else if (codeBoard.playID === 2){
-//         up = 87
-//         left = 65
-//         right = 68
-//         down = 83
-//     }
-//     if (codeBoard.gameOver) {
-//       return;
-//     } else {
-//       document.onkeyup = (e) => {
-//         if ([38,37,39,40].includes(e.code)){
-//           if (e.code == down) {
-//           codeBoard.movePeice();
-//           codeBoard.render();
-//           } else if (e.code == left) {
-//           codeBoard.translatePiece(0);
-//           codeBoard.render();
-//           } else if (e.code == right) {
-//           codeBoard.translatePiece(1);
-//           codeBoard.render();
-//           } else if (e.code == up) {
-//           codeBoard.rotatePeice();
-//           codeBoard.render();
-//           }
-//         } else if ([87,65,68,83].includes(e.code)){
-//           if (e.code == 83) {
-//             board_2.movePeice();
-//             board_2.render();
-//             } else if (e.code == 65) {
-//             board_2.translatePiece(0);
-//             board_2.render();
-//             } else if (e.code == 68) {
-//             board_2.translatePiece(1);
-//             board_2.render();
-//             } else if (e.code == 87) {
-//             board_2.rotatePeice();
-//             board_2.render();
-//             }
-//         }
-        
-//       };
-//     }
-//   }
 

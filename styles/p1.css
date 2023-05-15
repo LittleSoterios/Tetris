@@ -229,6 +229,7 @@ body {
   padding: 2vmin 5vmin 2vmin 5vmin;
 }
 #play-again-2 {
+  margin-top: 10%;
   color: aliceblue;
   border: aliceblue 1px solid;
   border-radius: 2.5%;
@@ -372,11 +373,11 @@ body {
 }
 
 .pink {
-  background-color: pink;
+  background-color: rgb(255, 0, 242);
 }
 
 .red {
-  background-color: red;
+  background-color: rgb(255, 0, 0);
 }
 
 .blue {
@@ -384,19 +385,19 @@ body {
 }
 
 .orange {
-  background-color: orange;
+  background-color: rgb(255, 153, 0);
 }
 
 .green {
-  background-color: greenyellow;
+  background-color: rgb(153, 255, 0);
 }
 
 .grey {
-  background-color: violet;
+  background-color: rgb(0, 255, 200);
 }
 
 .yellow {
-  background-color: yellow;
+  background-color: rgb(251, 255, 0);
 }
 
 .hidden {}
