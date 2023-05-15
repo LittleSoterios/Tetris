@@ -1,46 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="../scripts/test_1player.js"></script>
     <link rel="stylesheet" href="../styles/p1.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
     <title>TETRIS</title>
 </head>
+
 <body>
     <section id="home">
         <h1 class="disableCaret">TETRIS</h1>
         <h2 id="p1" class="disableCaret">1 PLAYER</h2>
-        <h2 id ="p2"class="disableCaret">2 PLAYER</h2>
+        <h2 id="p2" class="disableCaret">2 PLAYER</h2>
     </section>
-      <section id="grid-container">
-       
+    <section id="grid-container">
+        
         <div id="board"></div>
         <div id="next"></div>
-        <div id="score-game"></div>
-        <div id="end-screen">
+        <div id="end-screen-1">
             <div class="disableCaret" id="score"> </div>
-            <div class="disableCaret" id="play-again">PLAY AGAIN</div>
-            <div class="disableCaret" id="go-home">HOME</div>
+            <div class="disableCaret" id="play-again-1">PLAY AGAIN</div>
+            <div class="disableCaret" id="go-home-1">HOME</div>
         </div>
+        
 
     </section>
     <section id="grid-container-2">
-       
+        
         <div id="p1_board"></div>
         <div id="p2_board"></div>
         <div id="p1_next"></div>
         <div id="p2_next"></div>
-        <div id="p1_score-game"></div>
-        <div id="p2_score-game"></div>
+        <div id="end-screen-2">
+            <div class="disableCaret" id="winner"> </div>
+            <div class="disableCaret" id="play-again-2">PLAY AGAIN</div>
+            <div class="disableCaret" id="go-home-2">HOME</div>
+        </div>
         
 
     </section>
-    
-    
-    
-    
-    
+
+
+
+
+
 </body>
+
 </html>

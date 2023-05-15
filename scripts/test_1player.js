@@ -1,4 +1,14 @@
-TETRAMINOS = {
+let board_1, board_2
+
+
+
+const WINNER_MSG = {
+  't': "It's a TIE!\nThat hardly ever happens...",
+  '1': "Player 1 wins - better luck next time Player 2",
+  '2': "Player 2 wins - Tetris ain't for everyone, Player 1"
+}
+
+const TETRAMINOS = {
   o: {
     color: "red",
     0: [
@@ -107,7 +117,7 @@ CODES = ["o", "i", "s", "z", "l", "j", "t"];
 // ! CLASSES
 
 class Board {
-  constructor(boardEl, nextEl, playID) {
+  constructor(boardEl, nextEl, playID, isMulti) {
     this.height = 20;
     this.width = 10;
     this.boardArr = [];
@@ -128,6 +138,19 @@ class Board {
     this.ticker;
     this.speedMultiplier = 1;
     this.score = 0;
+    this.isMulti = isMulti
+    this.scoreEl
+    if(this.isMulti == 2){
+      this.scoreEl = document.createElement('div')
+      this.scoreEl.id = `p${this.playID}_score-game${this.isMulti}`
+      multiContainer.appendChild(this.scoreEl)
+    }
+    else if(this.isMulti == 1){
+      this.scoreEl = document.createElement('div')
+      this.scoreEl.id = `p${this.playID}_score-game${this.isMulti}`
+      containerEl.appendChild(this.scoreEl)
+
+    }
 
     for (let i = 0; i < 4; i++) {
       let arr = [];
@@ -163,8 +186,10 @@ class Board {
   }
 
   render() {
+
     this.renderActivePeice();
     this.renderNextPiece();
+    document.getElementById(`p${this.playID}_score-game${this.isMulti}`).innerText = this.score
   }
 
   renderActivePeice() {
@@ -443,6 +468,7 @@ class Board {
         }
 
         this.lineCount = 0;
+        
         clearInterval(this.ticker)
 
         this.tickerFunc()
@@ -455,13 +481,27 @@ class Board {
       return
     }
   }
-  newGame() {
-    document.getElementById("end-screen").style.display = "none";
-    let new_board = new Board(boardEl, nextEl);
-    new_board.play();
+  newGame (){
+    console.log('does this work?')
+    console.log(this.id[this.id.length-1])
+    if(this.id[this.id.length-1] == 2){
+      console.log('does this')
+      document.getElementById(`end-screen-2`).style.display = "none"
+      console.log('fucking close end-screen 2')
+      board_1 = new Board(p1_board, p1_next, 1, 2)
+      board_2  = new Board(p2_board, p2_next, 2, 2)
+      board_2.play()
+      board_1.play()
+
+    }
+    else{
+      document.getElementById("end-screen-1").style.display = "none";
+      board_1 = new Board(boardEl, nextEl,1,1);
+      board_1.play();
+    }
   }
   tickerFunc() {
-    this.takeUserInput();
+    //takeUserInput(this);
     const onTick = () => {
       this.isGameOver();
       if (this.gameOver) {
@@ -477,6 +517,7 @@ class Board {
   play() {
     this.render();
     this.tickerFunc();
+    return
   }
 
   endGame() {
@@ -492,17 +533,52 @@ class Board {
           document.getElementById(`r${i}c${j}${this.playID}`).remove()
         }
       }
-    document.getElementById("end-screen").style.display = "flex";
-    document.getElementById("score").innerText = `SCORE: ${this.score}`;
-    document
-      .getElementById("play-again")
+    
+    document.getElementById(`p${this.playID}_score-game${this.isMulti}`).style.display = 'none'
+    this.scoreEl.remove() 
+    
+    
+    console.log("this is" , board_1)
+    if (this.isMulti == 2 && !(board_1.gameOver == true && board_2.gameOver == true)){
+      return
+    }
+    else if(this.isMulti == 2){
+      if (board_1.score == board_2.score){
+        winner = 't'
+      } else if(board_1.score > board_2.score){
+        winner = '1'
+      } else winner = '2'
+    }
+    
+
+
+    
+    document.getElementById(`end-screen-${this.isMulti}`).style.display = "flex";
+    console.log(document.getElementById(`end-screen-${this.isMulti}`))
+    if(this.isMulti == 1) {
+      document.getElementById("score").innerText = `SCORE: ${this.score}`
+      document
+      .getElementById(`play-again-${this.isMulti}`)
       .addEventListener("click", this.newGame);
-    document.getElementById("go-home").addEventListener("click", function () {
-      document.getElementById("end-screen").style.display = "none";
-      containerEl.style.display = "none";
-      document.getElementById("home").style.display = "flex";
-    });
-    return;
+    document.getElementById(`go-home-${this.isMulti}`).addEventListener("click", () => {
+      containerEl.style.display = 'none'
+      document.getElementById(`end-screen-2`).style.display = "none"
+      document.getElementById("home").style.display = "flex"
+    })   
+    }
+    else {
+      document.getElementById("winner").innerText = WINNER_MSG[winner]
+    
+    document
+      .getElementById(`play-again-${this.isMulti}`)
+      .addEventListener("click", this.newGame);
+    document.getElementById(`go-home-${this.isMulti}`).addEventListener("click",  () => {
+      document.getElementById(`end-screen-${this.isMulti}`).style.display = "none"
+      multiContainer.style.display = 'none'
+      document.getElementById("home").style.display = "flex"
+      })
+    }
+    
   }
 
   translatePiece(direction) {
@@ -526,64 +602,69 @@ class Board {
       (Object.keys(this.activePieceArr).length - 1);
   }
 
-  takeUserInput() {
-    let up,left,down,right
-    if(this.playID === 1){
-        up = 38
-        left = 37
-        right = 39
-        down = 40
-    } else if (this.playID === 2){
-        up = 87
-        left = 65
-        right = 68
-        down = 83
-    }
-    if (this.gameOver) {
-      return;
-    } else {
-      document.onkeyup = (e) => {
-        if (e.keyCode == down) {
-          this.movePeice();
-          this.render();
-        } else if (e.keyCode == left) {
-          this.translatePiece(0);
-          this.render();
-        } else if (e.keyCode == right) {
-          this.translatePiece(1);
-          this.render();
-        } else if (e.keyCode == up) {
-          this.rotatePeice();
-          this.render();
-        }
-      };
-    }
-  }
+  // takeUserInput(codeBoard) {
+  //   let up,left,down,right
+  //   if(this.playID === 1){
+  //       up = 38
+  //       left = 37
+  //       right = 39
+  //       down = 40
+  //   } else if (this.playID === 2){
+  //       up = 87
+  //       left = 65
+  //       right = 68
+  //       down = 83
+  //   }
+  //   if (this.gameOver) {
+  //     return;
+  //   } else {
+  //     document.onkeyup = (e) => {
+  //       if (e.code == down) {
+  //         this.movePeice();
+  //         this.render();
+  //       } else if (e.code == left) {
+  //         this.translatePiece(0);
+  //         this.render();
+  //       } else if (e.code == right) {
+  //         this.translatePiece(1);
+  //         this.render();
+  //       } else if (e.code == up) {
+  //         this.rotatePeice();
+  //         this.render();
+  //       }
+  //     };
+  //   }
+  // }
 }
 
 function init() {
+  
   // ! CACHED DOM ELEMENTS
-  const homeEl = document.getElementById("home")
+  
   homeEl.addEventListener("click", function (evt) {
     if (evt.target.id == "p1") {
       containerEl.style.display = "grid"
       homeEl.style.display = "none"
-      board = new Board(boardEl, nextEl, 1)
-      board.play()
+      board_1 = new Board(boardEl, nextEl, 1, 1)
+      board_1.play()
     }
     else if(evt.target.id == 'p2'){
-        multiContainer.style.display = "grid"
-        homeEl.style.display = "none"
+      multiContainer.style.display = "grid"
+      homeEl.style.display = "none"
 
-        board_1 = new Board(p1_board, p1_next, 1)
-        board_2  = new Board(p2_board, p2_next, 2)
-        board_1.play()
-        board_2.play()  
+      board_1 = new Board(p1_board, p1_next, 1, 2)
+      board_2  = new Board(p2_board, p2_next, 2, 2)
+      board_2.play()
+      board_1.play()
+      
+        
+          
     }
   });
 }
 
 window.addEventListener("DOMContentLoaded", init);
+const homeEl = document.getElementById("home")
 const multiContainer = document.getElementById('grid-container-2')
 const p1_board = document.getElementById('p1_board')
 const p2_board = document.getElementById('p2_board')
@@ -592,4 +673,95 @@ const p2_next = document.getElementById('p2_next')
 const containerEl = document.getElementById("grid-container");
 const boardEl = document.getElementById("board");
 const nextEl = document.getElementById("next");
+let winner;
+
+document.addEventListener('keyup', function(e){
+  //console.log(typeof(board_1) == undefined)
+  if(typeof(board_1) === 'undefined' || (board_1.gameOver == true &&board_2.gameOver == true)){
+    return
+  }
+  else{
+    if (['ArrowDown',"ArrowLeft","ArrowRight",'ArrowUp'].includes(e.code)){
+      if (e.code == 'ArrowDown') {
+      board_1.movePeice();
+      board_1.render();
+      } else if (e.code == 'ArrowLeft') {
+      board_1.translatePiece(0);
+      board_1.render();
+      } else if (e.code == "ArrowRight") {
+      board_1.translatePiece(1);
+      board_1.render();
+      } else if (e.code == 'ArrowUp') {
+      board_1.rotatePeice();
+      board_1.render();
+      }
+    } else if(board_2.gameOver == true) return
+    else if (['KeyS','KeyA','KeyD','KeyW'].includes(e.code)){
+      if (e.code == 'KeyS') {
+        board_2.movePeice();
+        board_2.render();
+        } else if (e.code == 'KeyA') {
+        board_2.translatePiece(0);
+        board_2.render();
+        } else if (e.code == 'KeyD') {
+        board_2.translatePiece(1);
+        board_2.render();
+        } else if (e.code == 'KeyW') {
+        board_2.rotatePeice();
+        board_2.render();
+        }
+    }
+  }
+
+})
+// function takeUserInput(codeBoard) {
+//     let up,left,down,right
+//     if(codeBoard.playID === 1){
+//         up = 38
+//         left = 37
+//         right = 39
+//         down = 40
+//     } else if (codeBoard.playID === 2){
+//         up = 87
+//         left = 65
+//         right = 68
+//         down = 83
+//     }
+//     if (codeBoard.gameOver) {
+//       return;
+//     } else {
+//       document.onkeyup = (e) => {
+//         if ([38,37,39,40].includes(e.code)){
+//           if (e.code == down) {
+//           codeBoard.movePeice();
+//           codeBoard.render();
+//           } else if (e.code == left) {
+//           codeBoard.translatePiece(0);
+//           codeBoard.render();
+//           } else if (e.code == right) {
+//           codeBoard.translatePiece(1);
+//           codeBoard.render();
+//           } else if (e.code == up) {
+//           codeBoard.rotatePeice();
+//           codeBoard.render();
+//           }
+//         } else if ([87,65,68,83].includes(e.code)){
+//           if (e.code == 83) {
+//             board_2.movePeice();
+//             board_2.render();
+//             } else if (e.code == 65) {
+//             board_2.translatePiece(0);
+//             board_2.render();
+//             } else if (e.code == 68) {
+//             board_2.translatePiece(1);
+//             board_2.render();
+//             } else if (e.code == 87) {
+//             board_2.rotatePeice();
+//             board_2.render();
+//             }
+//         }
+        
+//       };
+//     }
+//   }
 
