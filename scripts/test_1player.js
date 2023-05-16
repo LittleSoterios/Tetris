@@ -1,123 +1,6 @@
 
 
 let board_1, board_2
-// const TETRIS_AUDIO = new Audio('../audio/tetris-lofi.wav')
-// const LINE_AUDIO = new Audio('../audio/line.wav')
-// const LINE_AUDIO_4 = new Audio('../audio/4-line.wav')
-// const MULTI_AUDIO = new Audio('../audio/2-player.wav')
-
-
-// const WINNER_MSG = {
-//   't': "It's a TIE!\nThat hardly ever happens...",
-//   '1': "Player 1 wins - better luck next time Player 2",
-//   '2': "Player 2 wins - Tetris ain't for everyone, Player 1"
-// }
-
-// const TETRAMINOS = {
-//   o: {
-//     color: "red",
-//     0: [
-//       [1, 1],
-//       [1, 1],
-//     ],
-//   },
-
-//   i: { color: "yellow", 0: [[1, 1, 1, 1]], 1: [[1], [1], [1], [1]] },
-
-//   s: {
-//     color: "orange",
-//     0: [
-//       [0, 1, 1],
-//       [1, 1, 0],
-//     ],
-//     1: [
-//       [1, 0],
-//       [1, 1],
-//       [0, 1],
-//     ],
-//   },
-
-//   z: {
-//     color: "pink",
-//     0: [
-//       [1, 1, 0],
-//       [0, 1, 1],
-//     ],
-//     1: [
-//       [0, 1],
-//       [1, 1],
-//       [1, 0],
-//     ],
-//   },
-
-//   l: {
-//     color: "blue",
-//     0: [
-//       [1, 0],
-//       [1, 0],
-//       [1, 1],
-//     ],
-//     1: [
-//       [1, 1, 1],
-//       [1, 0, 0],
-//     ],
-//     2: [
-//       [1, 1],
-//       [0, 1],
-//       [0, 1],
-//     ],
-//     3: [
-//       [0, 0, 1],
-//       [1, 1, 1],
-//     ],
-//   },
-
-//   j: {
-//     color: "grey",
-//     0: [
-//       [0, 1],
-//       [0, 1],
-//       [1, 1],
-//     ],
-//     1: [
-//       [1, 1, 1],
-//       [0, 0, 1],
-//     ],
-//     2: [
-//       [1, 1],
-//       [1, 0],
-//       [1, 0],
-//     ],
-//     3: [
-//       [1, 0, 0],
-//       [1, 1, 1],
-//     ],
-//   },
-//   t: {
-//     color: "green",
-//     0: [
-//       [0, 1],
-//       [1, 1],
-//       [0, 1],
-//     ],
-//     1: [
-//       [1, 1, 1],
-//       [0, 1, 0],
-//     ],
-//     2: [
-//       [1, 0],
-//       [1, 1],
-//       [1, 0],
-//     ],
-//     3: [
-//       [0, 1, 0],
-//       [1, 1, 1],
-//     ],
-//   },
-// };
-// CODES = ["o", "i", "s", "z", "l", "j", "t"];
-
-// ! cached dom elements
 
 // ! CLASSES
 
@@ -622,39 +505,6 @@ class Board {
       (Object.keys(this.activePieceArr).length - 1);
   }
 
-  // takeUserInput(codeBoard) {
-  //   let up,left,down,right
-  //   if(this.playID === 1){
-  //       up = 38
-  //       left = 37
-  //       right = 39
-  //       down = 40
-  //   } else if (this.playID === 2){
-  //       up = 87
-  //       left = 65
-  //       right = 68
-  //       down = 83
-  //   }
-  //   if (this.gameOver) {
-  //     return;
-  //   } else {
-  //     document.onkeyup = (e) => {
-  //       if (e.code == down) {
-  //         this.movePeice();
-  //         this.render();
-  //       } else if (e.code == left) {
-  //         this.translatePiece(0);
-  //         this.render();
-  //       } else if (e.code == right) {
-  //         this.translatePiece(1);
-  //         this.render();
-  //       } else if (e.code == up) {
-  //         this.rotatePeice();
-  //         this.render();
-  //       }
-  //     };
-  //   }
-  // }
 }
 
 function init() {
@@ -803,16 +653,16 @@ const nextEl = document.getElementById("next");
  * The background music for the game.
  * @type {HTMLAudioElement}
  */
-const TETRIS_AUDIO = new Audio('../audio/tetris-lofi.wav');
+const TETRIS_AUDIO = new Audio('./audio/tetris-lofi.wav');
 
 //The sound effect that plays when a line is cleared.
-const LINE_AUDIO = new Audio('../audio/line.wav');
+const LINE_AUDIO = new Audio('./audio/line.wav');
 
 //The sound effect that plays when four lines are cleared at once.
-const LINE_AUDIO_4 = new Audio('../audio/4-line.wav');
+const LINE_AUDIO_4 = new Audio('./audio/4-line.wav');
 
 //The background music for the two-player game mode.
-const MULTI_AUDIO = new Audio('../audio/2-player.wav');
+const MULTI_AUDIO = new Audio('./audio/2-player.wav');
 
 
 // ! CONSTANT OBJECTS
