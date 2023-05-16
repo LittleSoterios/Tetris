@@ -322,6 +322,7 @@ body {
   flex-wrap: wrap;
   background-color: black;
   color: greenyellow;
+  font-size: 40%;
   
   text-align: justify;
 
@@ -367,6 +368,10 @@ body {
 
 }
 
+#button-grid{
+  display: none;
+}
+
 
 .empty {
   background-color: black;
@@ -401,3 +406,57 @@ body {
 }
 
 .hidden {}
+
+
+
+@media only screen and (max-width: 600px) {
+  #grid-container {
+
+    display: none;
+    grid-template-columns: 1vmin 25vmin 5vmin 10vmin 1vmin;
+    grid-template-rows: 5vmin 10vmin 5vmin 5vmin 30vmin 5vmin;
+    border: 1px black solid;
+    border-radius: 2.5%;
+    width: 42vmin;
+    height: 6-vmin;
+    background-size: auto 60vmin;
+    background-position-x: right;
+    background: linear-gradient(90deg, rgba(131, 58, 180, 1) 0%, rgba(255, 47, 47, 1) 50%, rgba(252, 176, 69, 1) 100%);
+    box-shadow: 0 0 50px 0 rgb(227, 186, 255);
+    /* visibility: hidden; */
+  
+  
+  }
+  #button-grid{
+    display: grid;
+    grid-template-columns: 14vmin 14vmin 14vmin;
+    grid-template-rows: 14vmin 14vmin;
+  }
+  #up{
+    grid-column: 2/3;
+    grid-row: 1/2;
+    width: 100%;
+    height: auto;
+  }
+  #left{
+    grid-column: 1/2;
+    grid-row: 2/3;
+    width: 100%;
+    height: auto;
+  }
+  #down{
+    grid-column: 2/3;
+    grid-row: 2/3;
+    width: 100%;
+    height: auto;
+  }
+  #right{
+    grid-column: 3/4;
+    grid-row: 2/3;
+    width: 100%;
+    height: auto;
+  }
+
+
+
+}

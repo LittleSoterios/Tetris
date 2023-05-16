@@ -114,8 +114,6 @@ renderActivePeice(){
             
                 this.boardGr.fillStyle = this.activePieceArr.color
                 this.boardGr.fillRect(j*30,i*30,30,30);
-            
-
             }
             else if (this.boardArr[i][j] == 'x'){
                 
@@ -140,14 +138,64 @@ movePeice() {
     else{
         this.clearPrevPiece()
         this.piecePositionPrev = this.piecePosition
-        this.piecePosition[1]++
-        
+        this.piecePosition[1]++    
     } 
     
 }
 ```
 
 Alongside the move piece function this moves the tetramino down the board array and renders it on the canvas. A similar function clearPrevPiece was used the clear the previous position of the piece from the board array and the canvas.
+
+The next features that needed to be implemented were to stop the piece once it hit the bottom and create a new active piece. From there piece collision needed to be implemented, so that pieces would stop and lock once they couldn't move down any further. Rotation was also implemented. Originally Tetraminos were represented in a 4 by 4 matrix and rotation was implemented by calculating the 90 degree rotation of the current tetramino matrix. This ended up causing issues with consistent alignment when rotated quickly so was abandoned and each seperate rotation was represented in the Tetraminos were moved into an object which held their rotations and their color. Below is an example of how the Tetraminoes were represented:
+
+```
+const TETRAMINOS = {
+  o: {
+    color: "red", // Tetramino color
+    0: [ // Rotation 0
+      [1, 1], // Row 1
+      [1, 1], // Row 2
+    ],
+  },
+
+  i: {
+    color: "yellow", // Tetramino color
+    0: [[1, 1, 1, 1]], // Rotation 0
+    1: [[1], [1], [1], [1]] // Rotation 1
+  },
+
+  s: {
+    color: "orange", // Tetramino color
+    0: [
+      [0, 1, 1], // Row 1
+      [1, 1, 0], // Row 2
+    ],
+    1: [
+      [1, 0], // Row 1
+      [1, 1], // Row 2
+      [0, 1], // Row 3
+    ],
+  },
+
+  z: {
+    color: "pink", // Tetramino color
+    0: [
+      [1, 1, 0], // Row 1
+      [0, 1, 1], // Row 2
+    ],
+    1: [
+      [0, 1], // Row 1
+      [1, 1], // Row 2
+      [1, 0], // Row 3
+    ],
+  }, ... // continued for all Tetraminoes}
+  ```
+
+Rotation collision was a tricky problem to solve and like x axis and y axis translation collision, it required a no referenced copy of the board and a simulation of what the next rotation would look like to find out whether it was posible. Like all other collision functions this would return true if there was a collision and false if there was no collision (i.e the inputed movement from the user was possible given the state of the board). That boolean would then be used to update the position/rotation of the tetramino.
+
+Clearing lines was fairly simple. If any rows in the board array were full of 'x's which represented placed blocks it would delete that row and unshift a new 0's (empty space) row to the top of the board.
+
+With that the main 
 
 
 

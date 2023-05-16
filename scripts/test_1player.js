@@ -552,9 +552,27 @@ function homeClickHandler(evt) {
   }
 }
 
-// Listen for keyboard input events
-document.addEventListener('keyup', function(e){
+document.getElementById('button-grid').addEventListener('click', (evt) =>{
+  if(evt.target.id === 'up'){
+    console.log('gets here')
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': 'ArrowUp'}));
+  }
+  else if(evt.target.id === 'left'){
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': 'ArrowLeft'}));
+  }
+  else if(evt.target.id === 'down'){
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': 'ArrowDown'}));
+  }
+  else if(evt.target.id === 'right'){
+    document.dispatchEvent(new KeyboardEvent('keyup', {'key': 'ArrowRight'}));
+  }
+})
 
+// Listen for keyboard input events
+document.addEventListener('keyup', (e) =>{
+  console.log(board_1)
+  e.isTrusted = true
+  console.log(e.key == 'Arrow')
   // If either board is undefined or both have game over, return
   if(typeof(board_1) === 'undefined' || (board_1.gameOver == true && board_2.gameOver == true)){
     return;
@@ -562,24 +580,24 @@ document.addEventListener('keyup', function(e){
   // Otherwise, check which player pressed a key
   else{
     // If player 1 pressed a key
-    if (['ArrowDown',"ArrowLeft","ArrowRight",'ArrowUp'].includes(e.code)){
+    if (['ArrowDown',"ArrowLeft","ArrowRight",'ArrowUp'].includes(e.key)){
       // Move the piece down if the down arrow is pressed
-      if (e.code == 'ArrowDown') {
+      if (e.key == 'ArrowDown') {
         board_1.movePeice();
         board_1.render();
       } 
       // Translate the piece left if the left arrow is pressed
-      else if (e.code == 'ArrowLeft') {
+      else if (e.key == 'ArrowLeft') {
         board_1.translatePiece(0);
         board_1.render();
       } 
       // Translate the piece right if the right arrow is pressed
-      else if (e.code == "ArrowRight") {
+      else if (e.key == "ArrowRight") {
         board_1.translatePiece(1);
         board_1.render();
       } 
       // Rotate the piece clockwise if the up arrow is pressed
-      else if (e.code == 'ArrowUp') {
+      else if (e.key == 'ArrowUp') {
         board_1.rotatePeice();
         board_1.render();
       }
