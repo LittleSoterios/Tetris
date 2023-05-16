@@ -554,7 +554,6 @@ function homeClickHandler(evt) {
 
 document.getElementById('button-grid').addEventListener('click', (evt) =>{
   if(evt.target.id === 'up'){
-    console.log('gets here')
     document.dispatchEvent(new KeyboardEvent('keyup', {'key': 'ArrowUp'}));
   }
   else if(evt.target.id === 'left'){
@@ -570,9 +569,7 @@ document.getElementById('button-grid').addEventListener('click', (evt) =>{
 
 // Listen for keyboard input events
 document.addEventListener('keyup', (e) =>{
-  console.log(board_1)
   e.isTrusted = true
-  console.log(e.key == 'Arrow')
   // If either board is undefined or both have game over, return
   if(typeof(board_1) === 'undefined' || (board_1.gameOver == true && board_2.gameOver == true)){
     return;
