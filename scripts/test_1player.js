@@ -1,121 +1,121 @@
 
 
 let board_1, board_2
-const TETRIS_AUDIO = new Audio('../audio/tetris-lofi.wav')
-const LINE_AUDIO = new Audio('../audio/line.wav')
-const LINE_AUDIO_4 = new Audio('../audio/4-line.wav')
-const MULTI_AUDIO = new Audio('../audio/2-player.wav')
+// const TETRIS_AUDIO = new Audio('../audio/tetris-lofi.wav')
+// const LINE_AUDIO = new Audio('../audio/line.wav')
+// const LINE_AUDIO_4 = new Audio('../audio/4-line.wav')
+// const MULTI_AUDIO = new Audio('../audio/2-player.wav')
 
 
-const WINNER_MSG = {
-  't': "It's a TIE!\nThat hardly ever happens...",
-  '1': "Player 1 wins - better luck next time Player 2",
-  '2': "Player 2 wins - Tetris ain't for everyone, Player 1"
-}
+// const WINNER_MSG = {
+//   't': "It's a TIE!\nThat hardly ever happens...",
+//   '1': "Player 1 wins - better luck next time Player 2",
+//   '2': "Player 2 wins - Tetris ain't for everyone, Player 1"
+// }
 
-const TETRAMINOS = {
-  o: {
-    color: "red",
-    0: [
-      [1, 1],
-      [1, 1],
-    ],
-  },
+// const TETRAMINOS = {
+//   o: {
+//     color: "red",
+//     0: [
+//       [1, 1],
+//       [1, 1],
+//     ],
+//   },
 
-  i: { color: "yellow", 0: [[1, 1, 1, 1]], 1: [[1], [1], [1], [1]] },
+//   i: { color: "yellow", 0: [[1, 1, 1, 1]], 1: [[1], [1], [1], [1]] },
 
-  s: {
-    color: "orange",
-    0: [
-      [0, 1, 1],
-      [1, 1, 0],
-    ],
-    1: [
-      [1, 0],
-      [1, 1],
-      [0, 1],
-    ],
-  },
+//   s: {
+//     color: "orange",
+//     0: [
+//       [0, 1, 1],
+//       [1, 1, 0],
+//     ],
+//     1: [
+//       [1, 0],
+//       [1, 1],
+//       [0, 1],
+//     ],
+//   },
 
-  z: {
-    color: "pink",
-    0: [
-      [1, 1, 0],
-      [0, 1, 1],
-    ],
-    1: [
-      [0, 1],
-      [1, 1],
-      [1, 0],
-    ],
-  },
+//   z: {
+//     color: "pink",
+//     0: [
+//       [1, 1, 0],
+//       [0, 1, 1],
+//     ],
+//     1: [
+//       [0, 1],
+//       [1, 1],
+//       [1, 0],
+//     ],
+//   },
 
-  l: {
-    color: "blue",
-    0: [
-      [1, 0],
-      [1, 0],
-      [1, 1],
-    ],
-    1: [
-      [1, 1, 1],
-      [1, 0, 0],
-    ],
-    2: [
-      [1, 1],
-      [0, 1],
-      [0, 1],
-    ],
-    3: [
-      [0, 0, 1],
-      [1, 1, 1],
-    ],
-  },
+//   l: {
+//     color: "blue",
+//     0: [
+//       [1, 0],
+//       [1, 0],
+//       [1, 1],
+//     ],
+//     1: [
+//       [1, 1, 1],
+//       [1, 0, 0],
+//     ],
+//     2: [
+//       [1, 1],
+//       [0, 1],
+//       [0, 1],
+//     ],
+//     3: [
+//       [0, 0, 1],
+//       [1, 1, 1],
+//     ],
+//   },
 
-  j: {
-    color: "grey",
-    0: [
-      [0, 1],
-      [0, 1],
-      [1, 1],
-    ],
-    1: [
-      [1, 1, 1],
-      [0, 0, 1],
-    ],
-    2: [
-      [1, 1],
-      [1, 0],
-      [1, 0],
-    ],
-    3: [
-      [1, 0, 0],
-      [1, 1, 1],
-    ],
-  },
-  t: {
-    color: "green",
-    0: [
-      [0, 1],
-      [1, 1],
-      [0, 1],
-    ],
-    1: [
-      [1, 1, 1],
-      [0, 1, 0],
-    ],
-    2: [
-      [1, 0],
-      [1, 1],
-      [1, 0],
-    ],
-    3: [
-      [0, 1, 0],
-      [1, 1, 1],
-    ],
-  },
-};
-CODES = ["o", "i", "s", "z", "l", "j", "t"];
+//   j: {
+//     color: "grey",
+//     0: [
+//       [0, 1],
+//       [0, 1],
+//       [1, 1],
+//     ],
+//     1: [
+//       [1, 1, 1],
+//       [0, 0, 1],
+//     ],
+//     2: [
+//       [1, 1],
+//       [1, 0],
+//       [1, 0],
+//     ],
+//     3: [
+//       [1, 0, 0],
+//       [1, 1, 1],
+//     ],
+//   },
+//   t: {
+//     color: "green",
+//     0: [
+//       [0, 1],
+//       [1, 1],
+//       [0, 1],
+//     ],
+//     1: [
+//       [1, 1, 1],
+//       [0, 1, 0],
+//     ],
+//     2: [
+//       [1, 0],
+//       [1, 1],
+//       [1, 0],
+//     ],
+//     3: [
+//       [0, 1, 0],
+//       [1, 1, 1],
+//     ],
+//   },
+// };
+// CODES = ["o", "i", "s", "z", "l", "j", "t"];
 
 // ! cached dom elements
 
@@ -591,6 +591,8 @@ class Board {
       .getElementById(`play-again-${this.isMulti}`)
       .addEventListener("click", this.newGame);
     document.getElementById(`go-home-${this.isMulti}`).addEventListener("click",  () => {
+      MULTI_AUDIO.pause()
+      MULTI_AUDIO.currentTime = 0
       document.getElementById(`end-screen-${this.isMulti}`).style.display = "none"
       multiContainer.style.display = 'none'
       document.getElementById("home").style.display = "flex"
@@ -656,86 +658,311 @@ class Board {
 }
 
 function init() {
-  
-  // ! CACHED DOM ELEMENTS
-  
-  homeEl.addEventListener("click", function (evt) {
-    if (evt.target.id == "p1") {
-      containerEl.style.display = "grid"
-      homeEl.style.display = "none"
-      board_1 = new Board(boardEl, nextEl, 1, 1)
-      board_1.play()
-      TETRIS_AUDIO.volume = 0.4
-      TETRIS_AUDIO.play()
-
-      TETRIS_AUDIO.loop = true;
-    }
-    else if(evt.target.id == 'p2'){
-      multiContainer.style.display = "grid"
-      homeEl.style.display = "none"
-      MULTI_AUDIO.volume = 0.4
-      MULTI_AUDIO.loop = true
-      MULTI_AUDIO.play()
-      board_1 = new Board(p1_board, p1_next, 1, 2)
-      board_2  = new Board(p2_board, p2_next, 2, 2)
-      board_2.play()
-      board_1.play()
-      
-        
-          
-    }
-  });
+  homeEl.addEventListener("click", homeClickHandler)
 }
 
-window.addEventListener("DOMContentLoaded", init);
-const homeEl = document.getElementById("home")
-const multiContainer = document.getElementById('grid-container-2')
-const p1_board = document.getElementById('p1_board')
-const p2_board = document.getElementById('p2_board')
-const p1_next = document.getElementById('p1_next')
-const p2_next = document.getElementById('p2_next')
-const containerEl = document.getElementById("grid-container");
-const boardEl = document.getElementById("board");
-const nextEl = document.getElementById("next");
-let winner;
+// ! EVENT LISTENERS
+/**
+ * Add an event listener to the home page that sets up one or two Tetris boards depending on the user's selection.
+ * @param {object} evt - The event object
+ * @returns {undefined}
+ */
+function homeClickHandler(evt) {
+  // Check if the player has selected one player mode
+  if (evt.target.id == "p1") {
+    // Show the grid container for one player
+    containerEl.style.display = "grid";
+    homeEl.style.display = "none";
 
+    // Set up the first Tetris board and start the game
+    board_1 = new Board(boardEl, nextEl, 1, 1);
+    board_1.play();
+
+    // Set the volume and play the Tetris audio
+    TETRIS_AUDIO.volume = 0.4;
+    TETRIS_AUDIO.play();
+    TETRIS_AUDIO.loop = true;
+  }
+  // Check if the player has selected two player mode
+  else if (evt.target.id == 'p2') {
+    // Show the grid container for two players
+    multiContainer.style.display = "grid";
+    homeEl.style.display = "none";
+
+    // Set the volume and play the multiplayer audio
+    MULTI_AUDIO.volume = 0.4;
+    MULTI_AUDIO.loop = true;
+    MULTI_AUDIO.play();
+
+    // Set up two Tetris boards and start the game for both players
+    board_1 = new Board(p1_board, p1_next, 1, 2);
+    board_2 = new Board(p2_board, p2_next, 2, 2);
+    board_2.play();
+    board_1.play();
+  }
+}
+
+// Listen for keyboard input events
 document.addEventListener('keyup', function(e){
 
-  if(typeof(board_1) === 'undefined' || (board_1.gameOver == true &&board_2.gameOver == true)){
-    return
+  // If either board is undefined or both have game over, return
+  if(typeof(board_1) === 'undefined' || (board_1.gameOver == true && board_2.gameOver == true)){
+    return;
   }
+  // Otherwise, check which player pressed a key
   else{
+    // If player 1 pressed a key
     if (['ArrowDown',"ArrowLeft","ArrowRight",'ArrowUp'].includes(e.code)){
+      // Move the piece down if the down arrow is pressed
       if (e.code == 'ArrowDown') {
-      board_1.movePeice();
-      board_1.render();
-      } else if (e.code == 'ArrowLeft') {
-      board_1.translatePiece(0);
-      board_1.render();
-      } else if (e.code == "ArrowRight") {
-      board_1.translatePiece(1);
-      board_1.render();
-      } else if (e.code == 'ArrowUp') {
-      board_1.rotatePeice();
-      board_1.render();
+        board_1.movePeice();
+        board_1.render();
+      } 
+      // Translate the piece left if the left arrow is pressed
+      else if (e.code == 'ArrowLeft') {
+        board_1.translatePiece(0);
+        board_1.render();
+      } 
+      // Translate the piece right if the right arrow is pressed
+      else if (e.code == "ArrowRight") {
+        board_1.translatePiece(1);
+        board_1.render();
+      } 
+      // Rotate the piece clockwise if the up arrow is pressed
+      else if (e.code == 'ArrowUp') {
+        board_1.rotatePeice();
+        board_1.render();
       }
-    } else if(board_2.gameOver == true) return
+    } 
+    // If player 2 pressed a key
+    else if(board_2.gameOver == true) {
+      return;
+    }
     else if (['KeyS','KeyA','KeyD','KeyW'].includes(e.code)){
+      // Move the piece down if the S key is pressed
       if (e.code == 'KeyS') {
         board_2.movePeice();
         board_2.render();
-        } else if (e.code == 'KeyA') {
+      } 
+      // Translate the piece left if the A key is pressed
+      else if (e.code == 'KeyA') {
         board_2.translatePiece(0);
         board_2.render();
-        } else if (e.code == 'KeyD') {
+      } 
+      // Translate the piece right if the D key is pressed
+      else if (e.code == 'KeyD') {
         board_2.translatePiece(1);
         board_2.render();
-        } else if (e.code == 'KeyW') {
+      } 
+      // Rotate the piece clockwise if the W key is pressed
+      else if (e.code == 'KeyW') {
         board_2.rotatePeice();
         board_2.render();
-        }
+      }
     }
   }
-
 })
+
+window.addEventListener("DOMContentLoaded", init);
+
+
+// ! CACHED DOM ELEMENTS
+/**
+ * The home element, used to navigate to one or two player mode.
+ * @type {HTMLElement}
+ */
+const homeEl = document.getElementById("home");
+
+// The container element for the two-player game grid.
+const multiContainer = document.getElementById('grid-container-2');
+
+// The game board element for player 1 in two-player mode.
+const p1_board = document.getElementById('p1_board');
+
+// The game board element for player 2 in two-player mode.
+const p2_board = document.getElementById('p2_board');
+
+// The "next piece" element for player 1 in two-player mode.
+const p1_next = document.getElementById('p1_next');
+
+// The "next piece" element for player 2 in two-player mode.
+const p2_next = document.getElementById('p2_next');
+
+// The container element for the one-player game grid.
+const containerEl = document.getElementById("grid-container");
+
+// The game board element for the current player in one-player mode.
+const boardEl = document.getElementById("board");
+
+// The "next piece" element for the current player in one-player mode.
+const nextEl = document.getElementById("next");
+
+// ! AUDIO CONSTANTS
+
+/**
+ * The background music for the game.
+ * @type {HTMLAudioElement}
+ */
+const TETRIS_AUDIO = new Audio('../audio/tetris-lofi.wav');
+
+//The sound effect that plays when a line is cleared.
+const LINE_AUDIO = new Audio('../audio/line.wav');
+
+//The sound effect that plays when four lines are cleared at once.
+const LINE_AUDIO_4 = new Audio('../audio/4-line.wav');
+
+//The background music for the two-player game mode.
+const MULTI_AUDIO = new Audio('../audio/2-player.wav');
+
+
+// ! CONSTANT OBJECTS
+// Object containing winning messages for each player and tie game
+const WINNER_MSG = {
+  't': "It's a TIE!\nThat hardly ever happens...", // Tie game message
+  '1': "Player 1 wins - better luck next time Player 2", // Player 1 win message
+  '2': "Player 2 wins - Tetris ain't for everyone, Player 1" // Player 2 win message
+}
+
+// Object containing the tetramino shapes, colors, and their rotations
+const TETRAMINOS = {
+  o: {
+    color: "red", // Tetramino color
+    0: [ // Rotation 0
+      [1, 1], // Row 1
+      [1, 1], // Row 2
+    ],
+  },
+
+  i: {
+    color: "yellow", // Tetramino color
+    0: [[1, 1, 1, 1]], // Rotation 0
+    1: [[1], [1], [1], [1]] // Rotation 1
+  },
+
+  s: {
+    color: "orange", // Tetramino color
+    0: [
+      [0, 1, 1], // Row 1
+      [1, 1, 0], // Row 2
+    ],
+    1: [
+      [1, 0], // Row 1
+      [1, 1], // Row 2
+      [0, 1], // Row 3
+    ],
+  },
+
+  z: {
+    color: "pink", // Tetramino color
+    0: [
+      [1, 1, 0], // Row 1
+      [0, 1, 1], // Row 2
+    ],
+    1: [
+      [0, 1], // Row 1
+      [1, 1], // Row 2
+      [1, 0], // Row 3
+    ],
+  },
+
+  l: {
+    color: "blue", // Tetramino color
+    0: [
+      [1, 0], // Row 1
+      [1, 0], // Row 2
+      [1, 1], // Row 3
+    ],
+    1: [
+      [1, 1, 1], // Row 1
+      [1, 0, 0], // Row 2
+    ],
+    2: [
+      [1, 1], // Row 1
+      [0, 1], // Row 2
+      [0, 1], // Row 3
+    ],
+    3: [
+      [0, 0, 1], // Row 1
+      [1, 1, 1], // Row 2
+    ],
+  },
+
+  j: {
+    color: "grey", // Tetramino color
+    0: [
+      [0, 1], // Row 1
+      [0, 1], // Row 2
+      [1, 1], // Row 3
+    ],
+    1: [
+      [1, 1, 1], // Row 1
+      [0, 0, 1], // Row 2
+    ],
+    2: [
+      [1, 1], // Row 1
+      [1, 0], // Row 2
+      [1, 0], // Row 3
+    ],
+    3: [
+      [0, 0, 1],
+      [1, 1, 1],
+      ],
+      },
+      
+      j: {
+      color: "grey",
+      0: [
+      [0, 1],
+      [0, 1],
+      [1, 1],
+      ],
+      // 90-degree rotation
+      1: [
+      [1, 1, 1],
+      [0, 0, 1],
+      ],
+      // 180-degree rotation
+      2: [
+      [1, 1],
+      [1, 0],
+      [1, 0],
+      ],
+      // 270-degree rotation
+      3: [
+      [1, 0, 0],
+      [1, 1, 1],
+      ],
+      },
+      t: {
+      color: "green",
+      0: [
+      [0, 1],
+      [1, 1],
+      [0, 1],
+      ],
+      // 90-degree rotation
+      1: [
+      [1, 1, 1],
+      [0, 1, 0],
+      ],
+      // 180-degree rotation
+      2: [
+      [1, 0],
+      [1, 1],
+      [1, 0],
+      ],
+      // 270-degree rotation
+      3: [
+      [0, 1, 0],
+      [1, 1, 1],
+      ],
+      },
+      };
+      
+      // an array of the tetramino codes
+      CODES = ["o", "i", "s", "z", "l", "j", "t"];
+
+let winner;
+
+
 
