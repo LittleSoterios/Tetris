@@ -1,6 +1,6 @@
 
 
-let board_1, board_2
+
 
 // ! CLASSES
 
@@ -827,7 +827,8 @@ const TETRAMINOS = {
       // an array of the tetramino codes
       CODES = ["o", "i", "s", "z", "l", "j", "t"];
 
-let winner;
+// ! Global Variables
+let board_1, board_2, winner;
 
 
 
