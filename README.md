@@ -18,8 +18,10 @@ This project is a Tetris clone implemented in JavaScript. It provides a classic 
 
 ## Usage
 
+The game can be accessed [here](https://littlesoterios.github.io/Tetris/) or by following the steps below:
+
 1. Clone the repository: `git clone https://github.com/your-username/tetris-clone.git`
-2. Open the project in a web browser: `p1.html`
+2. Open the project in a web browser: `index.html`
 3. Choose between single-player or two-player mode
 4. Use the arrow keys (or custom keys) to control the tetromino pieces
 5. Aim to clear lines and achieve a high score in the game

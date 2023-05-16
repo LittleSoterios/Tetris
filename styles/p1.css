@@ -188,6 +188,7 @@ body {
   align-items: center;
   height: 100%;
   width: auto;
+  text-align: justify;
 }
 #end-screen-2 {
   
@@ -202,6 +203,7 @@ body {
   align-items: center;
   height: 100%;
   width: auto;
+  text-align: justify;
 }
 
 #score {
@@ -322,7 +324,7 @@ body {
   flex-wrap: wrap;
   background-color: black;
   color: greenyellow;
-  font-size: 40%;
+  font-size: 3vmin;
   
   text-align: justify;
 
@@ -341,6 +343,7 @@ body {
   justify-items: center;
   align-items: center;
   text-align: center;
+  font-size: 3vmin;
 
 }
 
@@ -356,6 +359,7 @@ body {
   justify-items: center;
   align-items: center;
   text-align: center;
+  font-size: 3vmin;
 
 
 }
@@ -455,6 +459,11 @@ body {
     grid-row: 2/3;
     width: 100%;
     height: auto;
+  }
+
+  #home{
+    height: 150vmin;
+    width: 100vmin;
   }
 
 
