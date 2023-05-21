@@ -193,11 +193,74 @@ const TETRAMINOS = {
   }, ... // continued for all Tetraminoes}
   ```
 
-Rotation collision was a tricky problem to solve and like x axis and y axis translation collision, it required a no referenced copy of the board and a simulation of what the next rotation would look like to find out whether it was posible. Like all other collision functions this would return true if there was a collision and false if there was no collision (i.e the inputed movement from the user was possible given the state of the board). That boolean would then be used to update the position/rotation of the tetramino.
+Rotation collision was a tricky problem to solve and like x axis and y axis translation collision, it required a non-referenced copy of the board and a simulation of what the next rotation would look like to find out whether it was posible. Like all other collision functions this would return true if there was a collision and false if there was no collision (i.e the inputed movement from the user was possible given the state of the board). That boolean would then be used to update the position/rotation of the tetramino.
 
 Clearing lines was fairly simple. If any rows in the board array were full of 'x's which represented placed blocks it would delete that row and unshift a new 0's (empty space) row to the top of the board.
 
-With that the main 
+With that the main functionality of the gameplay was completed.
+
+As mentioned before, while prototyping and developing the gameplay, I used canvas in 2d context to draw the tetris board on the screen. Once I had finished this though the plan was always to implment the visulisation of the game using divs. This invloved creating all of the divs within the board when I initisialised and built out the board array. The code for this can be seen below (if you look carefully you can see how I've linked each div to it's corresponding board array cell using template literals to code their coordinates into their element ID):
+
+```
+for (let i = 0; i < this.height; i++) {
+      let arr = [];
+      for (let j = 0; j < this.width + 1; j++) {
+        if (arr.length == this.width) {
+          arr.push("x");
+        } else {
+          arr.push(0);
+        }
+        if (j === 10) {
+          continue;
+        }
+        const cell = document.createElement("div");
+        cell.id = `r${i}c${j}${this.playID}`;
+        cell.classList.add("empty");
+        this.boardEl.appendChild(cell);
+      }
+      this.boardArr.push(arr);
+    }
+  
+
+```
+
+The line `if (arr.length == this.width) { arr.push("x"); ` creates an invisible wall of what the game sees as placed peices along the right side. I admit this is a bit of a hackey solution but it solves the issue of rotating out of bounds by using the same logic as function which checks if the tetramino would rotate into an already placed piece.
+
+The scores were farly simple to implement. The checkline function would call itself to check for multiple lines, each time incrementing a line counter variable on the board, based on whether the player achieved one, two, three or four lines, their score would be incremented by increasing numbers matching the original Tetris scoring system.
+
+The gameover function checks if their are pieces in the top row and then stops the gameloop and displays the gameover overlay, showing the player their score.
+
+### two-player mode
+
+As mentioned I had always planned to make a 2-player mode. Thanks to th board class this was *fairly* simple to implement as the game logic was already there and multiple boards could be initialised. I used more parameters to keep track of whether the board was playing in two player mode or one player mode in the form of the class variables isMulti and playID. isMulti is an number (either 1 or 2) and helps create the references for the divs as the CSS for multiplayer is different than that of one player. playID was also either 1 or 2 which kept track of which player the board belonged to. Again this was useful for win logic for multiplayer as well as formatting with CSS.
+
+## Challenges
+
+In terms of challenges on the project, there weren't many. I did get stuck on things but never for too long as the main challenge of tetris is really the collision logic. Once I worked out that a good way to check collisions would be to simulate what that would make the next board state look like and whether that board state would be possible or not, it became fairly straightforward to implement each collision checker. Another challenge which was talked about above was deciding how to represent the tetraminos and how I would rotate them which was explained in the previous section.
+
+## Wins
+
+I completed this project without looking at any kind of Tetris focused pseudocode (other than the pseudocode I wrote myself) or any tetris coding tutorials. This is probably quite evident from how janky some of the code is at this version of the game (21/05/2023) however all of the main Tetris functionality works and there are no gamebreaking bugs. I think the biggest win for me in this project was the first time I managed to get the first block to stop when it hit the bottom of the page. While it's pretty simple code, it reassured me that I'd be able to figure everything else out.
+
+
+## Key Learnings
+
+This was my first complex project in javascript and it's safe to say I am a lot more familiar with the syntax than I was when I started. It's difficult to quantify the key learnings from this project. Most of the concepts and methods I used to create the game were things that I was fairly confident with already. For example looping through a 2d array. I already had plenty of experiences manipulating Nd-arrays from data analysis suring university. One thing that was new to me was game ticks, my understanding of setInterval and setTimeout has improved and as well understanding CSS grid and flex-box. While I can't really put my finger on exactly what I learnt, I can definitely say that I learned that I can solve problems and apply existing knowledge to new problems. This project has definitely increased my confidence while also increasing my already high level of respect for programmers that can keep their code neat and readable.
+
+
+## Bugs
+
+The only real bugs that are present is that after a gameover scenario the next block will still spawn which is noticeable however has no effect on the gameplay. There is most likely a very simple fix to it with the order of how the screen renders however I've yet to be able to find that fix. Another 'bug' is when you are along the very right side you cant rotate the peice if it's width is smaller than it's width once rotated. This is due to the pieces rotation around 0,0 on the array which would put the piece out of bounds. A check could be implemented to check if it has space on it's left to move over and rotate however as it wasn't gamebreaking I chose not to fix it immediately and spent my time polishing the aesthetics of the game.
+
+## Future Improvements
+
+I experiemented with a hardcore mode. This would involve the screen getting blurred as the score gets higher as well as rogue pieces that were unusual shapes being spawned 2% of the time. This is definitely something that I would like to implement in the future.
+
+The scoring system for lines is the same as origianl Tetris however I haven't implemented scoring for soft and hard dropping, t-spins, or all-clears. Other than t-spins these could be included with a couple lines of code.
+
+Race mode in two player. The orignal plan as shown in my wireframes, was to have two player mode as a race mode - first to x amount of points. That way the game would end for both players at the same time. In the end I ran out of time to include this however it is definitely something I would like to include in the future.
+
+
 
 
 
