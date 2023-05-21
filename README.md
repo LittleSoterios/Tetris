@@ -148,7 +148,7 @@ movePeice() {
 
 Alongside the move piece function, this moves the tetromino down the board array and renders it on the canvas. A similar function clearPrevPiece was used the clear the previous position of the piece from the board array and the canvas.
 
-The next features that needed to be implemented were to stop the piece once it hit the bottom and create a new active piece. From there piece collision needed to be implemented, so that pieces would stop and lock once they couldn't move down any further. Rotation was also implemented. Originally Tetraminos were represented in a 4 by 4 matrix and rotation was implemented by calculating the 90-degree rotation of the current tetramino matrix. This ended up causing issues with consistent alignment when rotated quickly so was abandoned and each separate rotation was represented in the Tetraminos were moved into an object which held their rotations and their colour. Below is an example of how the Tetraminoes were represented:
+The next features that needed to be implemented were to stop the piece once it hit the bottom and create a new active piece. From there piece collision needed to be implemented, so that pieces would stop and lock once they couldn't move down any further. Rotation was also implemented. Originally tetrominoes were represented in a 4 by 4 matrix and rotation was implemented by calculating the 90-degree rotation of the current tetromino matrix. This ended up causing issues with consistent alignment when rotated quickly so was abandoned and each separate rotation was represented in the tetrominoes being moved into an object which held their rotations and their colour. Below is an example of how the Tetraminoes were represented:
 
 ```
 const TETRAMINOS = {
@@ -236,7 +236,7 @@ As mentioned I had always planned to make a 2-player mode. Thanks to the board c
 
 ## Challenges
 
-In terms of challenges on the project, there weren't many. I did get stuck on things but never for too long as the main challenge of Tetris is really the collision logic. Once I worked out that a good way to check collisions would be to simulate what that would make the next board state look like and whether that board state would be possible or not, it became fairly straightforward to implement each collision checker. Another challenge which was talked about above was deciding how to represent the tetraminos and how I would rotate them which was explained in the previous section.
+In terms of challenges on the project, there weren't many. I did get stuck on things but never for too long as the main challenge of Tetris is really the collision logic. Once I worked out that a good way to check collisions would be to simulate what that would make the next board state look like and whether that board state would be possible or not, it became fairly straightforward to implement each collision checker. Another challenge which was talked about above was deciding how to represent the tetrominoes and how I would rotate them which was explained in the previous section.
 
 ## Wins
 
@@ -256,7 +256,7 @@ The only real bugs that are present are that after a game-over scenario, the nex
 
 I experimented with a hardcore mode. This would involve the screen getting blurred as the score gets higher as well as rogue pieces that were unusual shapes being spawned 2% of the time. This is definitely something that I would like to implement in the future.
 
-The scoring system for lines is the same as the origianl Tetris however I haven't implemented scoring for soft and hard dropping, t-spins, or all-clears. Other than t-spins these could be included with a couple of lines of code.
+The scoring system for lines is the same as the original Tetris however I haven't implemented scoring for soft and hard dropping, t-spins, or all-clears. Other than t-spins these could be included with a couple of lines of code.
 
 Race mode in two-player. The original plan as shown in my wireframes, was to have two-player mode as a race mode - first to x amount of points. That way the game would end for both players at the same time. In the end, I ran out of time to include this however it is definitely something I would like to include in the future.
 
