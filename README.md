@@ -32,15 +32,15 @@ Feel free to contribute to the project by adding new features, improving the cod
 
 The development of this Tetris clone spanned over a period of five days, during which the core gameplay mechanics and user interface were implemented. Here's a breakdown of the timeframe:
 
-    Day 1: Basic gameplay mechanics were established, including tetromino movement, rotation, and stacking. The single-player mode and its corresponding user interface were implemented.
+- Day 1: Basic gameplay mechanics were established, including tetromino movement, rotation, and stacking. The single-player mode and its corresponding user interface were implemented.
 
-    Day 2: All collision logic was completed, and line clearing was added. This included adding a score system and speeding up gameplay as the score increased.
+- Day 2: All collision logic was completed, and line clearing was added. This included adding a score system and speeding up gameplay as the score increased.
 
-    Day 3: The game was moved from canvas using 2d context, over to grid and flex-box using divs to simulate the blocks. This improved the UI and visiual apprearance. A home screen and play again function were added after implementing gameover logic.
+- Day 3: The game was moved from canvas using 2d context, over to grid and flex-box using divs to simulate the blocks. This improved the UI and visiual apprearance. A home screen and play again function were added after implementing gameover logic.
 
-    Day 4: Started to implement 2-player mode (short day)
+- Day 4: Started to implement 2-player mode (short day)
 
-    Day 5: Finished 2-player mode - user can now navigate between all game modes and the home page
+- Day 5: Finished 2-player mode - user can now navigate between all game modes and the home page
 
 The project was successfully completed within the allocated timeframe.
 
