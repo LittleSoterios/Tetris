@@ -48,7 +48,7 @@ The project was successfully completed within the allocated timeframe.
 
 The project was completed using vanilla Javascript, CSS and HTML. Wireframes were made in Figma and all coding was completed in VS Code.
 
-## Breif
+## Brief
 
 The goal is to create an interactive and enjoyable gaming experience while adhering to the following requirements:
 
