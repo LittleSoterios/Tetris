@@ -1,7 +1,5 @@
 # Tetris
 
-
-
 # Tetris Clone
 
 This project is a Tetris clone implemented in JavaScript. It provides a classic Tetris gaming experience with both single-player and two-player modes. The game features intuitive controls for moving, rotating, and dropping tetromino pieces within a grid. Players aim to clear lines by filling them completely with tetrominoes, earning points and increasing the game's speed as they progress. The project utilizes HTML, CSS, and JavaScript to create an interactive and visually appealing Tetris game.
@@ -48,7 +46,7 @@ The project was successfully completed within the allocated timeframe.
 
 The project was completed using vanilla Javascript, CSS and HTML. Wireframes were made in Figma and all coding was completed in VS Code.
 
-## Breif
+## Brief
 
 The goal is to create an interactive and enjoyable gaming experience while adhering to the following requirements:
 
@@ -96,7 +94,7 @@ Can be found in the root of the Repo: 'psuedocode.txt'
 I started developing a prototype of the main 1 player game. The prototype code can be found in './scripts/prototype.js' and can be tried out by opening protype.html in the page's directory.
 
 I knew from the offset that I would want to create a class to run the main gameplay as this would make implementing the 2-player mode a lot easier down the line. The main starting point was simply creating the Tetris board and getting a tetromino to move down the board at a steady rate. This was fairly simple to implement using a SetInterval with a callback function to render the tetromino on the canvas given its position in relation to the board. The render function for the prototype can be seen below:
-``` 
+```javascript 
 renderActivePeice(){
 
     for (let i = 0; i< this.activePieceArr[this.pieceOrientation].length; i++){
@@ -150,7 +148,7 @@ Alongside the move piece function, this moves the tetromino down the board array
 
 The next features that needed to be implemented were to stop the piece once it hit the bottom and create a new active piece. From there piece collision needed to be implemented, so that pieces would stop and lock once they couldn't move down any further. Rotation was also implemented. Originally tetrominoes were represented in a 4 by 4 matrix and rotation was implemented by calculating the 90-degree rotation of the current tetromino matrix. This ended up causing issues with consistent alignment when rotated quickly so was abandoned and each separate rotation was represented in the tetrominoes being moved into an object which held their rotations and their colour. Below is an example of how the Tetraminoes were represented:
 
-```
+```javascript
 const TETRAMINOS = {
   o: {
     color: "red", // Tetramino color
@@ -201,7 +199,7 @@ With that, the main functionality of the gameplay was completed.
 
 As mentioned before, while prototyping and developing the gameplay, I used canvas in 2d context to draw the Tetris board on the screen. Once I had finished this though the plan was always to implement the visualisation of the game using divs. This involved creating all of the divs within the board when I initialised and built out the board array. The code for this can be seen below (if you look carefully you can see how I've linked each div to its corresponding board array cell using template literals to code their coordinates into their element ID):
 
-```
+```javascript
 for (let i = 0; i < this.height; i++) {
       let arr = [];
       for (let j = 0; j < this.width + 1; j++) {
